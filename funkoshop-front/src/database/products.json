@@ -1,0 +1,32 @@
+[
+    {
+        "product_id": 1,
+        "licence_name" : "STAR WARS",
+        "product_name": "STORMTROOPER LIGHTSABER",
+        "image_front": "/star-wars/trooper-1.webp",
+        "image_back": "/star-wars/trooper-box.webp",
+        "price": "$1799,99.-",
+        "dues": 3,
+        "stock": 999
+    },
+    {
+        "product_id": 2,
+        "licence_name" : "POKEMON",
+        "product_name": "PIDGEOTTO",
+        "image_front": "/pokemon/pidgeotto-1.webp",
+        "image_back": "/pokemon/pidgeotto-box.webp",
+        "price": "$2799,99.-",
+        "dues": 6,
+        "stock": 999
+    },
+    {
+        "product_id": 3,
+        "licence_name" : "HARRY POTTER",
+        "product_name": "LUNA LOVEGOOD LION MASK",
+        "image_front": "/harry-potter/luna-1.webp",
+        "image_back": "/harry-potter/luna-box.webp",
+        "price": "$3799,99.-",
+        "dues": 12,
+        "stock": 999
+    }
+]
