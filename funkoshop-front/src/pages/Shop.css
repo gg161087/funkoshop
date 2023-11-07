@@ -1,5 +1,7 @@
 #shop {
     display: flex;
+    flex-direction: row;
+    width: 100%;
     gap: var(--spacing-28);
     font-family: var(--base-font);
     margin: var(--spacing-68) auto;

@@ -1,7 +1,9 @@
 import { Header } from '../partials/Header.jsx';
 import { Footer } from '../partials/Footer.jsx';
 
-import products from '../../../database/products.json';
+import products from '../database/products.json';
+
+import './Shop.css';
 
 export const Shop = () => {
     return (

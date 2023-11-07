@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import './Header.css';
 
 export const Header = () => {
@@ -6,36 +8,36 @@ export const Header = () => {
         <header className="page-header">
             <nav className="navbar container">
                 <picture className="navbar__logo">
-                    <a href="">                    
+                    <Link to="/">                    
                         <img src="./img/branding/logo_light_horizontal.svg" alt="FunkoShop Logotipo"/>
-                    </a>
+                    </Link>
                 </picture>
                 <ul className="navbar__menu">
                     <li className="navbar__item with-submenu">
                         <a className="navbar__link with-icon" href="">SHOP<iconify-icon icon="ion:chevron-down"></iconify-icon></a>
                         <ul className="submenu">
                             <li className="submenu__item">
-                                <a className="submenu__link" href="">Funkos</a>
+                                <Link className="submenu__link" to="/shop">Funkos</Link>
                             </li>
                             <li className="submenu__item">
-                                <a className="submenu__link" href="">Remeras</a>
+                                <Link className="submenu__link" to="/shop">Remeras</Link>
                             </li>
                             <li className="submenu__item">
-                                <a className="submenu__link" href="">LLaveros</a>
+                                <Link className="submenu__link" to="/shop">LLaveros</Link>
                             </li>
                         </ul>
                     </li>
                     <li className="navbar__item">
-                        <a className="navbar__link" href="./pages/contact.html">CONTACTO</a>                    
+                        <Link className="navbar__link" to="/contact">CONTACTO</Link>                    
                     </li>                    
                     <li className="navbar__item">
-                        <a className="navbar__link" href="/login">LOGIN</a>
+                        <Link className="navbar__link" to="/login">LOGIN</Link>
                     </li>
                     <li className="navbar__item">
-                        <a className="navbar__link" href="/register">REGISTER</a>
+                        <Link className="navbar__link" to="/register">REGISTER</Link>
                     </li>
                     <li className="navbar__item">
-                        <a className="navbar__cart" href="./pages/cart.html"><img src="./img/icons/cart-icon.svg" alt="icono de carrito de compras"/></a>                    
+                        <Link className="navbar__cart" to="/cart"><img src="./img/icons/cart-icon.svg" alt="icono de carrito de compras"/></Link>                    
                     </li>
                 </ul>
             </nav>

@@ -94,7 +94,7 @@ export const Register = () => {
                         <label className="form__label" htmlFor="repassword">Repite Contraseña:</label>
                         <input 
                             className="form__input" 
-                            type="repassword" 
+                            type="password" 
                             name="repassword" 
                             id="password" 
                             placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" 

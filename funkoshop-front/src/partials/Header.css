@@ -1,4 +1,6 @@
 .page-header {
+    font-family: var(--alternative-font);
+    color: var(--light-font-solid);
     background-color: var(--dark-bg-solid);
     padding: var(--spacing-36);
 }

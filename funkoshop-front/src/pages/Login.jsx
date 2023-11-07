@@ -45,8 +45,11 @@ export const Login = () => {
         <>
             <Header></Header>
             <main id="login" className="container">
-                <h2 className="login__title">INGRESAR A MI CUENTA</h2>
-                <form className="login__form form" action="" method="post" onSubmit={handleSubmit}>
+                <div className="login__header">
+                    <h2 className="login__title">INGRESAR A MI CUENTA</h2>
+                    <p className="login__subtitle">Para obtener novedades</p>
+                </div>                
+                <form className="login__form" action="" method="post" onSubmit={handleSubmit}>
                     <div className="form__box--grid">
                         <label className="form__label" htmlFor="email">Email:</label>
                         <input className="form__input" type="text" name="email" id="email" placeholder="johndoe@email.com" onChange={handleChange}/>
