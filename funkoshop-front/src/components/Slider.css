@@ -1,5 +1,4 @@
-.slider {
-    height: 100vh;
+.slider {    
     display: flex;
     justify-content: center;    
     flex-direction: column;

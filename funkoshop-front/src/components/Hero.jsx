@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 
+import './Hero.css'
+
 export const Hero = () => {
     return (
         <section className="hero">

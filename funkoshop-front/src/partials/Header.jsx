@@ -14,7 +14,7 @@ export const Header = () => {
                 </picture>
                 <ul className="navbar__menu">
                     <li className="navbar__item with-submenu">
-                        <a className="navbar__link with-icon" href="">SHOP<iconify-icon icon="ion:chevron-down"></iconify-icon></a>
+                        <Link className="navbar__link with-icon">SHOP<iconify-icon icon="ion:chevron-down"></iconify-icon></Link>
                         <ul className="submenu">
                             <li className="submenu__item">
                                 <Link className="submenu__link" to="/shop">Funkos</Link>
