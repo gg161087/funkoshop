@@ -2,7 +2,15 @@ import { Link } from 'react-router-dom';
 
 import './Header.css';
 
-export const Header = () => {
+export const Header = ({
+    productsCart,
+    setProductsCart,
+    countProductsCart,
+    setCountProductsCart,
+    total,
+    setTotal,
+    categories
+}) => {
 
     return (
         <header className="page-header">
@@ -16,15 +24,11 @@ export const Header = () => {
                     <li className="navbar__item with-submenu">
                         <Link className="navbar__link with-icon">SHOP<iconify-icon icon="ion:chevron-down"></iconify-icon></Link>
                         <ul className="submenu">
-                            <li className="submenu__item">
-                                <Link className="submenu__link" to="/shop">Funkos</Link>
-                            </li>
-                            <li className="submenu__item">
-                                <Link className="submenu__link" to="/shop">Remeras</Link>
-                            </li>
-                            <li className="submenu__item">
-                                <Link className="submenu__link" to="/shop">LLaveros</Link>
-                            </li>
+                            {categories.map((category) =>(
+                                <li className="submenu__item">
+                                    <Link className="submenu__link" to={`/shop/${category.category_name}`}>{category.category_name}</Link>
+                                </li>
+                            ))}                           
                         </ul>
                     </li>
                     <li className="navbar__item">

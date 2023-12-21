@@ -5,7 +5,7 @@
     align-items: center;
     padding: var(--spacing-16) 0;
 }
-.collection:nth-child(2) .collection__cover {
+.collection__cover__par {
     order: -1;
 }
 .collection__content {

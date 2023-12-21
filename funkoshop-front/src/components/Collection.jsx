@@ -1,14 +1,16 @@
+import { Link } from 'react-router-dom';
+
 import './Collection.css'
 
-export const Collection = ({licence}) => {    
+export const Collection = ({licence, nameClass}) => {       
     return (
         <section className="collection container">
             <article className="collection__content">
                 <h3 className="collection__title">{licence.licence_name}</h3>
                 <p className="collection__text">{licence.licence_description}</p>
-                <a className="collection__link" href="./pages/shop.html">VER COLECCIÓN</a>                              
+                <Link className="collection__link" to='/shop' >VER COLECCIÓN</Link>                              
             </article>
-            <picture className="collection__cover">
+            <picture className={nameClass}>
                 <img src={`./img/${licence.licence_image}`} alt={`Figura de ${licence.licence_name}`}/>
             </picture>
         </section>  

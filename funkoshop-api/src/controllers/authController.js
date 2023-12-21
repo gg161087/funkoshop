@@ -28,6 +28,7 @@ const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         // Busca al usuario por correo electrónico
+        console.log(req.body);
         const user = await User.findOne({ where: { email } });
   
         if (!user) {
