@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
+import { CrudsAdmin } from './../components/crud/CrudsAdmin.jsx'
 import { DataContext } from './../contexts/DataContexts.jsx';
 
 export const Dashboard = () => {
@@ -21,6 +22,7 @@ export const Dashboard = () => {
         <main className='container'>
             <h2>{user.name}</h2>
             <button onClick={logOut}>LogOut</button>
+            <CrudsAdmin/>
         </main>
     )
 }

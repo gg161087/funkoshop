@@ -27,6 +27,14 @@ export const postDynamic = async (path, params) => {
         console.error(error);
     }
 }
+export const deleteDinamic = async (path, params) => {
+    try {
+        const { data } = await axios.delete(API+path, params);
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 export const axiosInstance = axios.create({
     baseURL: API,

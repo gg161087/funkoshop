@@ -33,28 +33,21 @@ export const DataProvider = ({ children }) => {
         if (response) {
             setCategories(response)
         }
-    }
-    const getRoles = async (path) => {
-        try {
-            const response = await getDynamic(`user_has_role/${path}`)  
-            setRoles(response)          
-        } catch (error) {
-            console.error(error)
-        }
-    }
+    }    
     const getToken = () => {
         const localToken = localStorage.getItem('token')
         const localUser = localStorage.getItem('user')
         if (localToken && localUser) {
+            let user = JSON.parse(localUser)            
             setIsLoggedIn(true);
-            setUser(JSON.parse(localUser))
-            getRoles(localUser.user_id)
+            setUser(user)
+            setRoles(user.roles)
         }        
     }
 
     const handleLogin = async (credentials) => {        
         try {            
-            const response = await postDynamic('auth/login', {
+            const response = await postDynamic('users/login', {
                 email: credentials.email,
                 password: credentials.password
             });                                   
@@ -62,9 +55,8 @@ export const DataProvider = ({ children }) => {
                 const authToken = response.token;
                 localStorage.setItem('token', authToken);
                 localStorage.setItem('user', JSON.stringify(response))
-                console.log(response.user_id);
-                setUser(response);
-                getRoles(response.user_id)                               
+                setUser(response);  
+                setRoles(response.roles)                                             
                 setIsLoggedIn(true);
             } else {
                 setIsLoggedIn(false);

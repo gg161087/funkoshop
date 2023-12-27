@@ -9,7 +9,7 @@ import { DataContext } from './../contexts/DataContexts.jsx';
 import './Login.css';
 
 export const Login = () => {
-    const { handleLogin, isLoggedIn } = useContext(DataContext);
+    const { handleLogin, isLoggedIn, roles } = useContext(DataContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
@@ -31,7 +31,7 @@ export const Login = () => {
     useEffect(()=>{
         if (isLoggedIn) {
             navigate('/dashboard')  
-        }
+        }        
     })
     return (
         <main id="login" className="container">

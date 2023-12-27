@@ -4,7 +4,7 @@ import { checkPassword } from './../utils/handlePassword.js';
 import { userModel, roleModel } from './../models/userModel.js';
 
 export const login = async (req, res, next) => {
-    const { email, password } = req.body;    
+    const { email, password } = req.body;  
     try {        
         const user = await userModel.findOne({ 
             where: { email },
