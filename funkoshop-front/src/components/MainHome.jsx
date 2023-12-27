@@ -7,7 +7,7 @@ export const MainHome = ({products, licences}) => {
             {licences.map((licence, index) =>(
                 <Collection 
                     licence={licence} 
-                    key={licence.licence_id}
+                    key={licence.id}
                     nameClass={index % 2 === 0 ? 'collection__cover__par' : 'collection__cover'}
                 >
                 </Collection>      

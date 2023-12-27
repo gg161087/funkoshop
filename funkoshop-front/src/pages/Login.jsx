@@ -1,17 +1,16 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 const mySwal = withReactContent(Swal);
 
-import { postDynamic } from './../utils/httpClient.js';
-
-const apiUrl = 'http://localhost:3000/api';
+import { DataContext } from './../contexts/DataContexts.jsx';
 
 import './Login.css';
 
 export const Login = () => {
-    const navigate = useNavigate()
+    const { handleLogin, isLoggedIn } = useContext(DataContext);
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -23,24 +22,17 @@ export const Login = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {            
-            const response = await postDynamic(`${apiUrl}/auth/login`, {
-                email: formData.email,
-                password: formData.password
-            });  
-            console.log(response);          
-            if (response.success) {                
-                const authToken = response.token;
-                localStorage.setItem('token', authToken);
-                console.log('navigate aca');
-                return navigate('/');
-            } else {
-                console.error('Error de inicio de sesión');
-            }
+        try {
+            await handleLogin(formData);          
         } catch (error) {
-            console.error('Error de red:', error);
-        }
+            console.log(`Error en handleLogin ${error}`);
+        }                      
     };
+    useEffect(()=>{
+        if (isLoggedIn) {
+            navigate('/dashboard')  
+        }
+    })
     return (
         <main id="login" className="container">
             <div className="login__header">

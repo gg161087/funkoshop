@@ -1,15 +1,11 @@
 import { Router } from 'express';
 
-import productController from './../controllers/productController.js';
-import authMiddleware from './../middleware/authMiddleware.js';
+import { getProductById, getAllProducts, createProduct, updateProductById, deleteProductById } from './../controllers/productController.js';
 
-const router = Router();
+export const productRouter = Router();
 
-router.get('/', productController.getProducts);
-router.get('/licence/:licence_id', productController.getProductsByLicence);
-router.get('/:product_id', productController.getProduct);
-router.post('/', authMiddleware.authenticateToken, authMiddleware.authorizeRole(1), productController.createProduct);
-router.put('/:product_id', authMiddleware.authenticateToken, authMiddleware.authorizeRole(1), productController.updateProduct);
-router.delete('/:product_id', authMiddleware.authenticateToken, authMiddleware.authorizeRole(1), productController.deleteProduct);
-
-export default router;
+productRouter.get('/:id', getProductById);
+productRouter.get('/', getAllProducts);
+productRouter.post('/', createProduct);
+productRouter.put('/:id', updateProductById);
+productRouter.delete('/:id', deleteProductById);

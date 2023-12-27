@@ -1,55 +1,99 @@
-import userService from './../services/userService.js';
+import { userModel, userRolesModel } from '../models/userModel.js';
+import { roleModel } from '../models/userModel.js';
+import { hashPassword } from '../utils/handlePassword.js';
 
-const getUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     try {
-        const users = await userService.getUsers();
-        users.length == 0 ? res.status(404).json({success: false, message: 'bad request'}) : res.json({success: true, data: users});
+        const users = await userModel.findAll({
+            include: [
+                roleModel 
+            ]
+        });
+        res.status(200).json(users)
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }  
-}
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
+};
 
-const getUser = async (req, res) => {
+export const getUserById = async (req, res, next) => {
+    const { id } = req.params;
     try {
-        const { id }= req.params;
-        const user = await userService.getUser(id);
-        user.length == 0 ? res.status(404).json({success: false, message: 'bad request'}) : res.json({success: true, data: user});
+        const user = await userModel.findByPk(id, {
+            include: [
+                roleModel 
+            ]
+        });     
+        res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-}
-
-const createUser = async (req, res) => {
-    const body = req.body;
-    const userScheme = {
-        name:body.name,
-        lastname:body.lastname,
-        email: body.email,
-        password: body.password 
-    }    
-    if( !userScheme.name || !userScheme.lastname || !userScheme.email || !userScheme.password ){
-        return res.json({ success: false, data: 'Missing fields.'});      
-    }
-    const result = await userService.createUser(userScheme);
-    res.json({ success: true, data: result});
+        console.error(error)
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const updateUser = async (req, res) => {
+export const createNewUser = async (req, res, next) => {
+    const { name, last_name, telephone, email, password } = req.body;
+    if (!name || !last_name || !telephone || !email || !password) {
+        return res.status(404).json({message: 'Missing fields.'});
+    };
+    const hashedPass = await hashPassword(password);    
+    const userSchema = {
+        name: name,
+        last_name: last_name,
+        telephone: telephone,
+        email: email,
+        password: hashedPass
+    };
+    try {
+        const newUser = await userModel.create(userSchema);
+        const newUserRole = await userRolesModel.create({user_id: newUser.id, role_id: 2})
+        res.status(201).json(newUser);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
+};
+
+export const updateUserById = async (req, res) => {
     const { id } = req.params;
-    const { category_name, category_description } = req.body
-    const result = userService.updateUser({ category_name, category_description }, id);
-    result.affectedRows <= 0 ? res.status(404).json({success: false, message: 'bad request'}) : res.json({success:true, message: 'actualizado correctamente'});
-};
-const deleteUser = async (req, res) => {
-    const { id } = req.params;
-    const result = userService.deleteCategory(id);
-    result.affectedRows <= 0 ? res.status(404).json({success: false, message: 'bad request'}) : res.json({success:true, message: 'Eliminado correctamente'});
+    const { name, last_name, telephone, email, password } = req.body;
+    if (!name || !last_name || !telephone || !email || !password) {
+        return res.status(404).json({message: 'Missing fields.'});
+    };
+    const hashedPass = hashPassword(password);
+    const userSchema = {
+        name: name,
+        last_name: last_name,
+        telephone: telephone,
+        email: email,
+        password: hashedPass
+    };
+    try {
+        const user = await userModel.findByPk(id);
+        if (!user) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            const result = await user.update({userSchema});
+            res.json({ message: 'User updated correctly.', result: result });
+        };
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-export default {
-    getUsers,
-    getUser,
-    createUser,
-    updateUser,
-    deleteUser
+export const deleteUserById = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const user = await userModel.findByPk(id);
+        if (!user) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            await user.destroy();
+            res.status(202).json({ message: 'User deleted successfully.' });
+        };
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };

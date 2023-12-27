@@ -1,14 +1,11 @@
 import { Router } from 'express';
 
-import licenceController from './../controllers/licenceController.js';
-import authMiddleware from './../middleware/authMiddleware.js';
+import { getLicenceById, getAllLicences, createLicence, updateLicenceById, deleteLicenceById } from './../controllers/licenceController.js';
 
-const router = Router();
+export const licenceRouter = Router();
 
-router.get('/', licenceController.getLicences);
-router.get('/:licence_id', licenceController.getLicence);
-router.post('/', authMiddleware.authenticateToken, licenceController.createLicence);
-router.put('/:licence_id', authMiddleware.authenticateToken, licenceController.updateLicence);
-router.delete('/:licence_id', authMiddleware.authenticateToken, licenceController.deleteLicence);
-
-export default router;
+licenceRouter.get('/:id', getLicenceById);
+licenceRouter.get('/', getAllLicences);
+licenceRouter.post('/', createLicence);
+licenceRouter.put('/:id', updateLicenceById);
+licenceRouter.delete('/:id', deleteLicenceById);

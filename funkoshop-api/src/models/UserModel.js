@@ -1,38 +1,74 @@
-import { DataTypes, Sequelize } from 'sequelize';
-import sequelize from '../database/database.js';
+import { DataTypes } from 'sequelize';
 
-const User = sequelize.define('user', {
-    user_id: {
-        type: DataTypes.INTEGER,
+import { db } from './../database/dbConfig.js';
+
+export const userModel = db.define('users', {
+    id: {
+        type: DataTypes.INTEGER(11),
         primaryKey: true,
-        autoIncrement: true,
+        autoIncrement: true
     },
     name: {
-        type: DataTypes.STRING(16),
-        allowNull: false,
+        type: DataTypes.STRING(50),
+        allowNull: false
     },
-    lastname: {
-        type: DataTypes.STRING(80),
-        allowNull: false,
+    last_name: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
+    telephone: {
+        type: DataTypes.STRING(13),
+        allowNull: false
     },
     email: {
         type: DataTypes.STRING(255),
         allowNull: false,
+        unique: true
     },
     password: {
-        type: DataTypes.STRING(255),
-        allowNull: false,
+        type: DataTypes.STRING(100),
+        allowNull: false
     },
-    create_time: {
+    createdAt: {
         type: DataTypes.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: DataTypes.NOW
     },
-}, {
-    tableName: 'user',
-    timestamps: false,
-    charset: 'utf8',
-    collate: 'utf8_general_ci',
-    engine: 'InnoDB',
+    updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }
+})
+export const roleModel = db.define('roles', {
+    id: {
+        type: DataTypes.INTEGER(11),
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING(60),
+        unique: true,
+        allowNull: false
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }
 });
 
-export default User;
+export const userRolesModel = db.define('user_roles', {
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }
+});
+userModel.belongsToMany(roleModel, { through: userRolesModel, foreignKey: 'user_id' });
+roleModel.belongsToMany(userModel, { through: userRolesModel, foreignKey: 'role_id' });

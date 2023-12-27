@@ -29,7 +29,7 @@ export const Slider = ({ products }) => {
                 <h2 className="slider__title">ÚLTIMOS LANZAMIENTOS</h2>
                 <div className="slider__cards">
                     {products.slice(currentIndex, currentIndex + itemsPerPage).map((product) => (
-                        <Card product={product} key={product.product_id}></Card>
+                        <Card product={product} key={product.id}></Card>
                     ))}
                 </div>
                 <div className="slider__arrows">

@@ -1,30 +1,32 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../database/database.js'; 
 
-const Licence = sequelize.define('licence', {
-    licence_id: {
-        type: DataTypes.INTEGER,
+import { db } from '../database/dbConfig.js';
+
+export const licenceModel = db.define('licences', {
+    id: {
+        type: DataTypes.INTEGER(11),
         primaryKey: true,
+        autoIncrement: true
+    },
+    name: {
+        type: DataTypes.STRING(60),
+        allowNull: false,
+        unique: true
+    },
+    description: {
+        type: DataTypes.STRING(255),
         allowNull: false,
     },
-    licence_name: {
-        type: DataTypes.STRING,
+    image: {
+        type: DataTypes.STRING(255),
         allowNull: false,
     },
-    licence_description: {
-        type: DataTypes.STRING,
-        allowNull: false,
+    createdAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
     },
-    licence_image: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-}, {
-    tableName: 'licence',
-    timestamps: false,
-    charset: 'utf8',
-    collate: 'utf8_general_ci',
-    engine: 'InnoDB',
+    updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    }
 });
-
-export default Licence;

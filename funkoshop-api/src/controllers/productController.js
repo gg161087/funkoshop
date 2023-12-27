@@ -1,100 +1,123 @@
-import productService from './../services/productService.js';
+import { licenceModel } from './../models/licenceModel.js'
+import { categoryModel } from '../models/categoryModel.js';
+import { productModel, productSpecificationsModel } from './../models/productModel.js';
 
-const getProducts = async (req, res) => {
+export const getAllProducts = async (req, res, next) => {
     try {
-        const products = await productService.getProducts();        
-        products.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: products});
+        const products = await productModel.findAll({
+            include: [
+                { model: licenceModel },
+                { model: categoryModel },
+                { model: productSpecificationsModel }            
+            ]
+        });
+        res.status(200).json(products);
+
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error getting products.', error: error.message });
+        console.log(error)
+        res.status(500).json({ message: error.message });
     }
 };
 
-const getProductsByLicence = async (req, res) => {
+export const getProductById = async (req, res, next) => {
+    const { id } = req.params
     try {
-        const { licence_id } = req.params
-        const products = await productService.getProductsByLicence(licence_id);
-        products.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: products});
+        const product = await productModel.findByPk(id, {
+            include: [
+                { model: productSpecificationsModel },                
+                { model: categoryModel },
+            ]
+        });
+        res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error getting product by license.', error: error.message});
+        console.log(error)
+        res.status(500).json({ message: error.message });
     }
 };
 
-const getProduct = async (req, res) => {
+export const createProduct = async (req, res) => {
+    const { brand, model, description, price,
+        stock, discount, sku, dues, imgUrl, category_id } = req.body;
+    if (!brand || !model || !description || !price || !stock ||
+        !discount || !sku || !dues || !imgUrl || !category_id) {
+        return res.status(404).json({ message: 'Missing fields.' });
+    };
+    const productSchema = {
+        brand: brand,
+        model: model,
+        description: description,
+        price: price,
+        stock: stock,
+        discount: discount,
+        sku: sku,
+        dues: dues,
+        imgUrl: imgUrl,
+        category_id: category_id
+    };
     try {
-        const { product_id } = req.params
-        const product = await productService.getProduct(product_id);
-        product.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: product});
+        const newProduct = await productModel.create({ productSchema });
+        return res.status(403).json(newProduct);
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Error getting product.', error: error.message});
-    }
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const createProduct = async (req, res) => {
-    const productData = req.body;
-    if(
-        !productData.product_name ||
-        !productData.product_description ||
-        !productData.price ||
-        !productData.stock ||
-        !productData.discount ||
-        !productData.sku ||
-        !productData.dues ||
-        !productData.image_front ||
-        !productData.image_back ||
-        !productData.license_id ||
-        !productData.category_id
-    ){
-        return res.status(404).json({ success: false, message: 'Missing fields.'}) 
-    }     
-    try {        
-        const createdProduct = await productService.createProduct(productData);
-        res.status(201).json({ success: true, message: 'Added product.', data:createdProduct});
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Error creating product.', error: error.message});
-    }    
-};
-
-const updateProduct = async (req, res) => {
+export const updateProductById = async (req, res) => {
     const { id } = req.params;
-    const productData = req.body;
-    if(
-        !productData.product_name ||
-        !productData.product_description ||
-        !productData.price ||
-        !productData.stock ||
-        !productData.discount ||
-        !productData.sku ||
-        !productData.dues ||
-        !productData.image_front ||
-        !productData.image_back ||
-        !productData.license_id ||
-        !productData.category_id
-    ){
-        return res.status(404).json({ success: false, message: 'Missing fields.'});
-    }
-    try {         
-        const updatedProduct = await productService.updateProduct(productData, id);
-        res.status(200).json({success:true, message: 'Product updated successfully.'});
-    } catch (error) {
-        res.status(500).json({success:false, message: 'Error updating product.', error: error.message});
-    }  
-};
+    const { brand, model, description, price,
+        stock, discount, sku, dues, imgUrl, category_id } = req.body;
+        
+    if (!brand || !model || !price || !sku || !category_id) {
+        return res.status(404).json({ message: 'Missing fields.' });
+    };
 
-const deleteProduct = async (req, res) => {
+    const decimalPrice = parseFloat(price)
+    const decimalDiscount = parseFloat(discount)
+
+    const productSchema = {
+        brand: brand,
+        model: model,
+        description: description,
+        price: decimalPrice,
+        stock: stock,        
+        discount: decimalDiscount,
+        sku: sku,
+        dues: dues,
+        imgUrl: imgUrl,
+        category_id: category_id
+    };    
     try {
-        const productId = req.params.id;
-        const result = await productService.deleteProduct(productId);
-        result ? res.status(200).json({ success:true, message: 'Product deleted successfully'}) : res.status(404).json({ success:false, message: 'Product not found.'});
+        const product = await productModel.findByPk(id);        
+        if (!product) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            product.price = decimalPrice 
+            product.discount = decimalDiscount   
+            await product.save();       
+            const result = await product.update({productSchema});
+            console.log(result);
+            res.json({ message: 'Product updated correctly.', result: result });
+        }
     } catch (error) {
-        res.status(500).json({ success:false, message: 'Error deleting product.'});
-    }
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-export default {
-    getProducts,
-    getProductsByLicence,
-    getProduct,
-    createProduct,
-    updateProduct,
-    deleteProduct
+export const deleteProductById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const product = await productModel.findByPk(id);
+
+        if (!product) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            await product.destroy();
+            res.status(202).json({ message: 'Product deleted successfully.' });
+        };
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };

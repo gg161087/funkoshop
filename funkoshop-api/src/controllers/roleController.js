@@ -1,60 +1,72 @@
-import roleService from './../services/roleService.js';
+import { roleModel } from '../models/userModel.js';
 
-const getRoles = async (req, res) => {
+export const getAllRoles = async (req, res) => {
     try {
-        const roles = await roleService.getRoles();
-        roles.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: roles});
+        const roles = await  roleModel.findAll();
+        res.status(200).json(roles)
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }  
-}
-
-const getRole = async (req, res) => {
-    try {
-        const { role_id }= req.params;
-        const role = await roleService.getRole(role_id);
-        role.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: role});
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-}
-
-const createRole = async (req, res) => {
-    const { role_name } = req.body;   
-    if(!role_name){
-        return res.json({ success: false, data: 'Missing field.'});      
-    }
-    const result = await roleService.createRole({role_name});
-    res.json({ success: true, data: result});
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const updateRole = async (req, res) => {
-    const { role_id } = req.params;
-    const { role_name } = req.body;
-    if(!role_name){
-        return res.json({ success: false, data: 'Missing field.'});      
-    }
+export const getRoleById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const result = await roleService.updateRole({role_name}, role_id);        
-        console.log(result);
-        res.json({ success: true, data: result});
+        const role = await roleModel.findByPk(id);        
+        res.status(200).json(role);
     } catch (error) {
-        res.json({ success: false, message: error});
-    }    
-    /* result.affectedRows <= 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success:true, message: 'Updated successfully.'}); */
+        console.error(error)
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const deleteRole = async (req, res) => {
-    const { role_id } = req.params;
-    const result = roleService.deleteRole(role_id);
-    console.log(result);
-    result.affectedRows <= 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success:true, message: 'Deleted successfully.'});
+export const createRole = async (req, res) => {    
+    const { name } = req.body;
+    if (!name) {
+        return res.status(404).json({message: 'Missing fields.'});
+    };
+    try {
+        const newRole = await roleModel.create({name});
+        res.status(201).json(newRole);        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-export default {
-    getRoles,
-    getRole,
-    createRole,
-    updateRole,
-    deleteRole
-}
+export const updateRoleById = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+    if (!name) {
+        return res.status(404).json({message: 'Missing fields.'});
+    };
+    try {
+        const role = await roleModel.findByPk(id);
+        if (!role) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            const result = await role.update({name});
+            res.json({message: 'Role updated correctly.', result:result})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
+};
+
+export const deleteRoleById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const role = await roleModel.findByPk(id);
+        if (!role) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            await role.destroy();
+            res.status(202).json({ message: 'Role deleted successfully.' });
+        };
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
+};

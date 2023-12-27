@@ -6,12 +6,12 @@ export const Collection = ({licence, nameClass}) => {
     return (
         <section className="collection container">
             <article className="collection__content">
-                <h3 className="collection__title">{licence.licence_name}</h3>
-                <p className="collection__text">{licence.licence_description}</p>
+                <h3 className="collection__title">{licence.name}</h3>
+                <p className="collection__text">{licence.description}</p>
                 <Link className="collection__link" to='/shop' >VER COLECCIÓN</Link>                              
             </article>
             <picture className={nameClass}>
-                <img src={`./img/${licence.licence_image}`} alt={`Figura de ${licence.licence_name}`}/>
+                <img src={`./img/${licence.image}`} alt={`Figura de ${licence.name}`}/>
             </picture>
         </section>  
     )

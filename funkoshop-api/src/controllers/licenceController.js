@@ -1,49 +1,76 @@
-import licenceService from './../services/licenceService.js';
+import { licenceModel } from './../models/licenceModel.js'
 
-const getLicences = async (req, res) => {
+export const getAllLicences = async (req, res) => {
     try {
-        const licences = await licenceService.getLicences();
-        licences.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: licences});       
+        const licences = await licenceModel.findAll();
+        res.status(200).json(licences);
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }  
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const getLicence = async (req, res) => {
+export const getLicenceById = async (req, res) => {
+    const { id } = req.params;
     try {
-        const { licence_id } = req.params
-        const licence = await licenceService.getLicence(licence_id);
-        licence.length == 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success: true, data: licence});  
+        const licence = await licenceModel.findByPk(id);
+        res.status(200).json(licence);        
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+        console.error(error)
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const createLicence = async (req, res) => {
-    const body = req.body;    
-    if( !body.licence_name || !body.licence_description || !body.licence_image){
-        return res.json({ success: false, data: 'Missing fields.'});      
-    }
-    const result = await licenceService.createLicence(body);
-    res.json({ success: true, data: result});
+export const createLicence = async (req, res) => {    
+    const { name, description, image } = req.body;
+    if (!name || ! description || image) {
+        return res.status(404).json({ message: 'Missing fields.'});
+    };
+    try {
+        const newLicence = await licenceModel.create({ name:name, description:description, image:image });
+        if (!newLicence) {
+            res.status(404).json({ message: 'Bad request.'});
+        } else {
+            res.status(201).json(newLicence);
+        };
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-const updateLicence = async (req, res) => {
-    const { licence_id } = req.params;
-    const { licence_name, licence_description, licence_image} = req.body;
-    const result = licenceService.updateLicence({ licence_name, licence_description, licence_image}, licence_id);
-    result.affectedRows <= 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success:true, message: 'Updated successfully.'});
-};
-const deleteLicence = async (req, res) => {
-    const { licence_id } = req.params;
-    const result = licenceService.deleteLicence(licence_id);
-    result.affectedRows <= 0 ? res.status(404).json({success: false, message: 'Bad request.'}) : res.json({success:true, message: 'Deleted successfully.'});
+export const updateLicenceById = async (req, res) => {
+    const { id } = req.params;
+    const { name, description, image } = req.body;
+    if (!name || ! description || image) {
+        return res.status(404).json({message: 'Missing fields.'});
+    };
+    try {
+        const licence = await licenceModel.findByPk(id);
+        if (!licence) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            const result = await licence.update({ name:name, description:description, image:image });
+            res.json({ message: 'Licence updated correctly.', result:result });
+        };      
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
 
-export default {
-    getLicences,
-    getLicence,
-    createLicence,
-    updateLicence,
-    deleteLicence
+export const deleteLicenceById = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const licence = await licenceModel.findByPk(id);
+        if (!licence) {
+            res.status(404).json({ message: 'Not found.' });
+        } else {
+            await licence.destroy();
+            res.status(202).json({ message: 'Licence deleted successfully.' });
+        };
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    };
 };
