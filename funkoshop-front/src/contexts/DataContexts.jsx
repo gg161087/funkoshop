@@ -11,6 +11,7 @@ export const DataProvider = ({ children }) => {
     const [categories, setCategories] = useState([]);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null)
+    const [users, setUsers] = useState([]);
     const [roles, setRoles] = useState(null)
     const [productsCart, setProductsCart] = useState([]);
     const [total, setTotal] = useState(0);
@@ -32,6 +33,12 @@ export const DataProvider = ({ children }) => {
         const response = await getDynamic('categories');
         if (response) {
             setCategories(response)
+        }
+    }
+    const getUsers = async () => {
+        const response = await getDynamic('users');
+        if (response) {
+            setUsers(response)
         }
     }    
     const getToken = () => {
@@ -76,11 +83,12 @@ export const DataProvider = ({ children }) => {
     useEffect(() =>{
         getProducts()
         getLicences()
-        getCategories()   
+        getCategories() 
+        getUsers()  
         getToken()        
     },[])
 
-    if (!products && !licences && !categories) {
+    if (!products && !licences && !categories && !users) {
         return null
     }
     
@@ -89,7 +97,8 @@ export const DataProvider = ({ children }) => {
             { 
                 products, 
                 licences, 
-                categories, 
+                categories,
+                users, 
                 isLoggedIn, 
                 productsCart, 
                 total, 

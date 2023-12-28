@@ -6,7 +6,7 @@ import { DataContext } from './../contexts/DataContexts.jsx';
 
 export const Home = () => {
 
-    const { licences, products} = useContext(DataContext);
+    const { licences, products } = useContext(DataContext);
 
     return (
         <>         

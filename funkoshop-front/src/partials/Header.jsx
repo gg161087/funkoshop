@@ -14,7 +14,7 @@ export const Header = () => {
             <nav className="navbar container">
                 <picture className="navbar__logo">
                     <Link to="/">                    
-                        <img src="./img/branding/logo_light_horizontal.svg" alt="FunkoShop Logotipo"/>
+                        <img src="/img/branding/logo_light_horizontal.svg" alt="FunkoShop Logotipo"/>
                     </Link>
                 </picture>
                 <ul className="navbar__menu">
@@ -48,7 +48,7 @@ export const Header = () => {
                         </>  
                     }                  
                     <li className="navbar__item">
-                        <Link className="navbar__cart" to="/cart"><img src="./img/icons/cart-icon.svg" alt="icono de carrito de compras"/></Link>                    
+                        <Link className="navbar__cart" to="/cart"><img src="/img/icons/cart-icon.svg" alt="icono de carrito de compras"/></Link>                    
                     </li>
                 </ul>
             </nav>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getDinamic } from '../../utils/getDinamic.js';
-import { updateDinamic } from '../../utils/updateDinamic.js';
+import { getDynamic } from './../../utils/httpClient.js';
+import { updateDynamic } from '../../utils/httpClient.js';
 
-export const EditProduct = ({id}) => {
+export const EditProduct = ({id}) => {    
     const navigate = useNavigate();
 
     const [product, setProduct] = useState(null);
@@ -21,7 +21,7 @@ export const EditProduct = ({id}) => {
     const [categoryId, setCategoryId] = useState(0);
 
     const getProductById = async () => {
-        const response = await getDinamic(`products/${id}`)
+        const response = await getDynamic(`products/${id}`)
         setProduct(response)
         setName(response.name)        
         setDescription(response.description)
@@ -55,7 +55,7 @@ export const EditProduct = ({id}) => {
             licence_id: licenceId,
             category_id: categoryId
         }        
-        const {result} = await updateDinamic('products', id, updateProduct)
+        const {result} = await updateDynamic('products', id, updateProduct)
     }
 
     if (!product) {
@@ -147,7 +147,7 @@ export const EditProduct = ({id}) => {
                     <label className="form-label">Licencia ID</label>
                     <input
                         type="number"
-                        value={licenceIdId}
+                        value={licenceId}
                         onChange={(e) => setLicenceId(e.target.value)}
                         className="form-control"/>
                 </div>

@@ -1,7 +1,9 @@
-import { DetailProduct } from './../components/DetailProduct.jsx';
+import './Detail.css';
 
 export const Detail = () => {
     return (
-        <DetailProduct/>
+        <div className="container">
+            <div>DetailProduct</div>
+        </div>
     )
 }
