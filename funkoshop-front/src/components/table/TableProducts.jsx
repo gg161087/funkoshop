@@ -64,7 +64,7 @@ export const TableProducts = ({ products }) => {
                         <li
                             key={index}
                             onClick={() => paginate(index + 1)}
-                            className={currentPage === index + 1 ? 'active' : ''}
+                            className={currentPage === index + 1 ? 'pagination__link active' : 'pagination__link '}
                         >
                             {index + 1}
                         </li>

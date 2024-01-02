@@ -1,6 +1,7 @@
 .card-item__cover {
     display: flex;
     position: relative;
+    max-height: 28rem;
     width: 300px;
 }
 .card-item__tag {

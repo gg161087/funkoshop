@@ -33,8 +33,8 @@ export const Slider = ({ products }) => {
                     ))}
                 </div>
                 <div className="slider__arrows">
-                    <button className="arrows__left" onClick={prevSlide}>{'<'}</button>
-                    <button className="arrows__right" onClick={nextSlide}>{'>'}</button>
+                    <button className="pagination__link arrows__left" onClick={prevSlide}>{'<'}</button>
+                    <button className="pagination__link arrows__right" onClick={nextSlide}>{'>'}</button>
                 </div>
             </div>
         </section>

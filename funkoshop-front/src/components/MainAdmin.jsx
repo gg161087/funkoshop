@@ -35,8 +35,7 @@ export const MainAdmin = () => {
             content: <TableRoles roles={roles}></TableRoles>
         },
     ];
-
-    console.log(products);
+    
     return (
         <div className='container'>
             <div id='admin'>

@@ -1,6 +1,7 @@
-// DataContext.js
 import { createContext, useState, useEffect } from 'react';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
+import { Icon } from './../components/Icon.jsx'
 import { getDynamic, postDynamic } from '../utils/httpClient.js';
 
 export const DataContext = createContext();
@@ -89,7 +90,11 @@ export const DataProvider = ({ children }) => {
     },[])
 
     if (!products && !licences && !categories && !users) {
-        return null
+        return (
+            <div className="container">
+                <Icon css='icon' icon={faSpinner} />
+            </div>
+        )
     }
     
     return (
