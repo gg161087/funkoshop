@@ -1,7 +1,6 @@
 .card-item__cover {
     display: flex;
-    position: relative;
-    max-height: 28rem;
+    position: relative;    
     width: 300px;
 }
 .card-item__tag {
@@ -13,11 +12,14 @@
     position: absolute;
     right: 0;
 }
-.card-item__cover img {
+.card-item__cover img {    
     animation: fade .7s;
 }
 .card-item__img--back {
     display: none;
+}
+.card-item__cover img .slider {
+    max-height: 30rem;
 }
 .card-item__cover:hover .card-item__img--back {
     display: block;

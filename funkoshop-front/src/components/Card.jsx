@@ -8,8 +8,8 @@ export const Card = ({product}) => {
             <Link className="card-item__link" to={`/shop/${product.category.name}/item/${product.id}`}>
                 <picture className="card-item__cover">
                     <span className="card-item__tag">Nuevo</span>
-                    <img className="card-item__img--front" src={`/img/${product.image_front}`} alt={`Figura coleccionable Funko de un ${product.name}`}/>
-                    <img className="card-item__img--back" src={`/img/${product.image_back}`} alt={`Figura coleccionable Funko de un ${product.name} en caja`}/>
+                    <img className="card-item__img--front slider" src={`/img/${product.image_front}`} alt={`Figura coleccionable Funko de un ${product.name}`}/>
+                    <img className="card-item__img--back slider" src={`/img/${product.image_back}`} alt={`Figura coleccionable Funko de un ${product.name} en caja`}/>
                 </picture>
                 <div className="card-item__content">
                     <p className="card-item__licence">{product.licence.name}</p>

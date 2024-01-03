@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-12-2023 a las 17:36:51
+-- Tiempo de generación: 03-01-2024 a las 14:34:34
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `funkoshop`
 --
+
+-- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `categories`
@@ -61,11 +63,13 @@ CREATE TABLE `licences` (
 -- Volcado de datos para la tabla `licences`
 --
 
-INSERT INTO `licences` (`id`, `name`, `description`, `image`) VALUES
-(1, 'Pokemon', 'Atrapa todos los que puedas y disfruta de una colección llena de amigos.', 'pokemon/vulpix-1.webp'),
-(2, 'Star Wars', 'Disfruta de una saga que sigue agregando personajes a su colección.', 'star-wars/baby-yoda-1.webp'),
-(3, 'Harry Potter', 'Revive los recuerdos de una saga llena de magia y encanto.', 'harry-potter/snape-patronus-1.webp'),
-(4, 'Naruto', 'Disfruta de la historia de un ninja adolescente', 'naruto/naruto-kakashi-1.webp');
+INSERT INTO `licences` (`id`, `name`, `description`, `image`, `createdAt`, `updatedAt`) VALUES
+(1, 'Pokemon', 'Atrapa todos los que puedas y disfruta de una colección llena de amigos.', 'pokemon/vulpix-1.webp', '2023-12-27 14:44:16', '2023-12-27 14:44:16'),
+(2, 'Star Wars', 'Disfruta de una saga que sigue agregando personajes a su colección.', 'star-wars/baby-yoda-1.webp', '2023-12-27 14:44:16', '2023-12-27 14:44:16'),
+(3, 'Harry Potter', 'Revive los recuerdos de una saga llena de magia y encanto.', 'harry-potter/snape-patronus-1.webp', '2023-12-27 14:44:16', '2023-12-27 14:44:16'),
+(4, 'Naruto', 'Disfruta de la historia de un ninja adolescente', 'naruto/naruto-kakashi-1.webp', '2023-12-27 14:44:16', '2023-12-27 14:44:16');
+
+-- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `products`
@@ -73,10 +77,10 @@ INSERT INTO `licences` (`id`, `name`, `description`, `image`) VALUES
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `name` varchar(60) NOT NULL,  
+  `name` varchar(60) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `price` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `stock` int(11) DEFAULT NULL,  
+  `stock` int(11) DEFAULT NULL,
   `discount` decimal(5,2) DEFAULT 0.00,
   `sku` varchar(50) NOT NULL,
   `dues` int(11) DEFAULT 0,
@@ -92,20 +96,21 @@ CREATE TABLE `products` (
 -- Volcado de datos para la tabla `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `discount`, `sku`, `dues`, `image_front`, `image_back`, `licence_id`, `category_id`) VALUES
-(1, 'Baby Yoda Blueball', 'Figura coleccionable de Baby Yoda (Grogu) - The Mandalorian Saga, edición limitada.', 1799.99, 8, 10, 'STW001001', 3, 'star-wars/baby-yoda-1.webp', 'star-wars/baby-yoda-box.webp', 2, 1),
-(2, 'Luke Skylwalker & Grogu', 'Figura coleccionable de Luke Skylwalker & Grogu - The Mandalorian Saga.', 2399.99, 8, 10, 'STW001003', 3, 'star-wars/luke-1.webp', 'star-wars/luke-box.webp', 2, 1),
-(3, 'Stormtrooper Lightsaber', 'Figura coleccionable de Stormtrooper Lightsaber - Star Wars Saga.', 1799.99, 8, 10, 'STW001004', 3, 'star-wars/trooper-1.webp', 'star-wars/trooper-box.webp', 2, 1),
-(4, 'Charmander Smiley', 'Figura coleccionable de Charmander - Pokemon Saga.', 1799.99, 8, 10, 'PKM001001', 3, 'pokemon/charmander-1.webp', 'pokemon/charmander-box.webp', 1, 1),
-(5, 'Dragonite Hi!', 'Figura coleccionable de Dragonite - Pokemon Saga.', 1799.99, 8, 10, 'PKM001002', 3, 'pokemon/dragonite-1.webp', 'pokemon/dragonite-box.webp', 1, 1),
-(6, 'Pidgeotto Flying', 'Figura coleccionable de Pidgeotto - Pokemon Saga.', 1799.99, 8, 10, 'PKM00103', 3, 'pokemon/pidgeotto-1.webp', 'pokemon/pidgeotto-box.webp', 1, 1),
-(7, 'Pikachu Smiley', 'Figura coleccionable de Pikachu - Pokemon Saga.', 1799.99, 8, 10, 'PKM001004', 3, 'pokemon/pikachu-1.webp', 'pokemon/pikachu-box.webp', 1, 1),
-(8, 'Vulpix Fancy', 'Figura coleccionable de Vulpix - Pokemon Saga.', 99.99, 8, 10, 'PKM001005', 3, 'pokemon/vulpix-1.webp', 'pokemon/vulpix-box.webp', 1, 1),
-(9, 'Harry Potter & Hegwid', 'Figura coleccionable de Harry Potter & Hegwid - Harry Potter Saga.', 1799.99, 11, 10, 'HPT001001', 9, 'harry-potter/harry-1.webp', 'harry-potter/harry-box.webp', 3, 1),
-(10, 'Herminione Ball Dress', 'Figura coleccionable de Herminione - Harry Potter Saga.', 1799.99, 8, 10, 'HPT001002', 3, 'harry-potter/hermione-1.webp', 'harry-potter/hermione-box.webp', 3, 1),
-(11, 'Luna Lovegood Lion Mask', 'Figura coleccionable de Luna Lovegood - Harry Potter Saga.', 1799.99, 8, 10, 'HPT001003', 3, 'harry-potter/luna-1.webp', 'harry-potter/luna-box.webp', 3, 1),
-(12, 'Snape Patronus', 'Figura coleccionable de Snape Patronus - Harry Potter Saga.', 1799.99, 13, 10, 'HPT001004', 3, 'harry-potter/snape-patronus-1.webp', 'harry-potter/snape-patronus-box.webp', 3, 1),
-(13, 'Kakashi Hatake Shippuden', 'Kakashi Hatake Shippuden', 1999.99, 20, 10, 'NRT001001', 9, 'naruto/naruto-kakashi-1.webp', 'naruto/naruto-kakashi-box.webp', 4, 1);
+INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `discount`, `sku`, `dues`, `image_front`, `image_back`, `licence_id`, `category_id`, `createdAt`, `updatedAt`) VALUES
+(1, 'Baby Yoda Blueball', 'Figura coleccionable de Baby Yoda (Grogu) - The Mandalorian Saga, edición limitada.', 1799.99, 8, 10.00, 'STW001001', 3, 'star-wars/baby-yoda-1.webp', 'star-wars/baby-yoda-1-box.webp', 2, 1, '2023-12-27 14:44:16', '2024-01-02 10:47:35'),
+(2, 'Luke Skylwalker & Grogu', 'Figura coleccionable de Luke Skylwalker & Grogu - The Mandalorian Saga.', 2399.99, 8, 10.00, 'STW001003', 3, 'star-wars/luke-1.webp', 'star-wars/luke-1-box.webp', 2, 1, '2023-12-27 14:44:16', '2024-01-02 10:47:44'),
+(3, 'Stormtrooper Lightsaber', 'Figura coleccionable de Stormtrooper Lightsaber - Star Wars Saga.', 1799.99, 8, 10.00, 'STW001004', 3, 'star-wars/trooper-1.webp', 'star-wars/trooper-1-box.webp', 2, 1, '2023-12-27 14:44:16', '2024-01-02 10:47:56'),
+(4, 'Charmander Smiley', 'Figura coleccionable de Charmander - Pokemon Saga.', 1799.99, 8, 10.00, 'PKM001001', 3, 'pokemon/charmander-1.webp', 'pokemon/charmander-1-box.webp', 1, 1, '2023-12-27 14:44:16', '2024-01-02 10:48:04'),
+(5, 'Dragonite Hi!', 'Figura coleccionable de Dragonite - Pokemon Saga.', 1799.99, 8, 10.00, 'PKM001002', 3, 'pokemon/dragonite-1.webp', 'pokemon/dragonite-1-box.webp', 1, 1, '2023-12-27 14:44:16', '2024-01-02 10:48:18'),
+(6, 'Pidgeotto Flying', 'Figura coleccionable de Pidgeotto - Pokemon Saga.', 1799.99, 8, 10.00, 'PKM00103', 3, 'pokemon/pidgeotto-1.webp', 'pokemon/pidgeotto-1-box.webp', 1, 1, '2023-12-27 14:44:16', '2024-01-02 10:48:33'),
+(7, 'Pikachu Smiley', 'Figura coleccionable de Pikachu - Pokemon Saga.', 1799.99, 8, 10.00, 'PKM001004', 3, 'pokemon/pikachu-1.webp', 'pokemon/pikachu-1-box.webp', 1, 1, '2023-12-27 14:44:16', '2024-01-02 10:48:42'),
+(8, 'Vulpix Fancy', 'Figura coleccionable de Vulpix - Pokemon Saga.', 99.99, 8, 10.00, 'PKM001005', 3, 'pokemon/vulpix-1.webp', 'pokemon/vulpix-1-box.webp', 1, 1, '2023-12-27 14:44:16', '2024-01-02 10:48:48'),
+(9, 'Harry Potter & Hegwid', 'Figura coleccionable de Harry Potter & Hegwid - Harry Potter Saga.', 1799.99, 11, 10.00, 'HPT001001', 9, 'harry-potter/harry-1.webp', 'harry-potter/harry-1-box.webp', 3, 1, '2023-12-27 14:44:16', '2024-01-02 10:48:56'),
+(10, 'Herminione Ball Dress', 'Figura coleccionable de Herminione - Harry Potter Saga.', 1799.99, 8, 10.00, 'HPT001002', 3, 'harry-potter/hermione-1.webp', 'harry-potter/hermione-1-box.webp', 3, 1, '2023-12-27 14:44:16', '2024-01-02 10:49:04'),
+(11, 'Luna Lovegood Lion Mask', 'Figura coleccionable de Luna Lovegood - Harry Potter Saga.', 1799.99, 8, 10.00, 'HPT001003', 3, 'harry-potter/luna-1.webp', 'harry-potter/luna-1-box.webp', 3, 1, '2023-12-27 14:44:16', '2024-01-02 10:49:09'),
+(12, 'Snape Patronus', 'Figura coleccionable de Snape Patronus - Harry Potter Saga.', 1799.99, 13, 10.00, 'HPT001004', 3, 'harry-potter/snape-patronus-1.webp', 'harry-potter/snape-patronus-1-box.webp', 3, 1, '2023-12-27 14:44:16', '2024-01-02 10:49:15'),
+(13, 'Kakashi Hatake Shippuden', 'Kakashi Hatake Shippuden', 1999.99, 20, 10.00, 'NRT001001', 9, 'naruto/naruto-kakashi-1.webp', 'naruto/naruto-kakashi-1-box.webp', 4, 1, '2023-12-27 14:44:16', '2024-01-02 10:49:21'),
+(14, 'Harry Potter', 'Remera coleccionable de Harry Potter.', 100.00, 999, 10.00, 'HPT003001', 6, 'harry-potter/harry-3.webp', 'harry-potter/harry-3-box.webp', 3, 2, '2024-01-02 10:41:29', '2024-01-02 11:57:06');
 
 -- --------------------------------------------------------
 
@@ -167,7 +172,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `last_name`, `telephone`, `email`, `password`, `createdAt`, `updatedAt`) VALUES
-(1, 'Administrador', 'Itechnology', '542215123478', 'admin@itechnology.com', '$2b$10$DwS8ByBVKeeKmMj9vGVHb.bAazoDI9JklgZKOjGNL22NJbC8vX92a', '2023-12-12 14:11:34', '2023-12-12 14:11:34');
+(1, 'Administrador', 'Itechnology', '542215123478', 'admin@funkoshop.com', '$2b$10$DwS8ByBVKeeKmMj9vGVHb.bAazoDI9JklgZKOjGNL22NJbC8vX92a', '2023-12-12 14:11:34', '2023-12-27 13:26:14');
 
 -- --------------------------------------------------------
 
@@ -199,13 +204,14 @@ INSERT INTO `user_roles` (`user_id`, `role_id`, `createdAt`, `updatedAt`) VALUES
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_name` (`name`);
-  
+
 --
--- Indices de la tabla `licence`
+-- Indices de la tabla `licences`
 --
 ALTER TABLE `licences`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_name` (`name`);
+
 --
 -- Indices de la tabla `products`
 --
@@ -254,7 +260,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`

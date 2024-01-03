@@ -1,10 +1,17 @@
 .hero {
     background-image: url(../../img/funkos-banner.webp);
-    padding: var(--spacing-128);
+    min-height: 45rem;    
     background-position: top;
     background-size: cover;
     background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
+    width: 100%;
+}
+.hero .container {
+    align-items: center;
 }
 .hero::before {
     content: '';

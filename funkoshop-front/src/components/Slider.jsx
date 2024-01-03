@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 import { Card } from './Card.jsx';
+import { Icon } from './Icon.jsx';
 
 import './Slider.css';
 
@@ -33,8 +35,8 @@ export const Slider = ({ products }) => {
                     ))}
                 </div>
                 <div className="slider__arrows">
-                    <button className="pagination__link arrows__left" onClick={prevSlide}>{'<'}</button>
-                    <button className="pagination__link arrows__right" onClick={nextSlide}>{'>'}</button>
+                    <button className="pagination__link arrows__left" onClick={prevSlide}><Icon css='icon' icon={faChevronLeft}/></button>
+                    <button className="pagination__link arrows__right" onClick={nextSlide}><Icon css='icon' icon={faChevronRight}/></button>
                 </div>
             </div>
         </section>

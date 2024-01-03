@@ -1,16 +1,19 @@
 .page-header {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     font-family: var(--alternative-font);
     color: var(--light-font-solid);
-    background-color: var(--dark-bg-solid);
-    padding: var(--spacing-36);
+    background-color: var(--dark-bg-solid);    
 }
 .navbar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    margin: 2rem 0 2rem 0;           
 }
-.nabvar__logo {
-    max-width: 300px;
+.navbar__logo {
+    max-width: 30rem;
 }
 .navbar__menu {
     display: flex;
@@ -53,4 +56,8 @@
 }
 .submenu__link:hover {
     background-color: var(--primary-900);
+}
+
+.navbar-toggle{
+    display: none;
 }
