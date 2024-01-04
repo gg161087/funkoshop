@@ -43,15 +43,17 @@
 }
 .submenu {
     display: none;
-    width: 300px;
+    width: 20rem;    
     position: absolute;
     background-color: var(--dark-bg-solid);
     z-index: 3;
 }
 .submenu__link {
-    display: block;
+    display: flex;
+    justify-content: left;
+    text-transform: uppercase;
     padding: var(--spacing-8) var(--spacing-16);
-    font-size: var(--font-medium);
+    font-size: var(--font-xsmall);
     transition: background .3s ease-in-out;
 }
 .submenu__link:hover {
@@ -60,4 +62,7 @@
 
 .navbar-toggle{
     display: none;
+}
+.navbar__link svg{
+    font-size: medium;
 }

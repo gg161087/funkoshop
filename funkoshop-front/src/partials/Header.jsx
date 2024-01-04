@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from './../components/Icon.jsx'
 import { DataContext } from './../contexts/DataContexts.jsx';
@@ -30,7 +30,7 @@ export const Header = () => {
                     </div>
                     <ul className={isOpen ? 'navbar__menu active' : 'navbar__menu'}>
                         <li className="navbar__item with-submenu">
-                            <Link className="navbar__link with-icon">SHOP<iconify-icon icon="ion:chevron-down"></iconify-icon></Link>
+                            <Link className="navbar__link with-icon">SHOP<Icon css='icon' icon={faChevronDown}/></Link>
                             <ul className="submenu">
                                 {categories.map((category) =>(
                                     <li className="submenu__item" key={category.id}>
