@@ -60,9 +60,8 @@ html {
     color: var(--dark-solid);
 }
 body {
-    font-size: 1.6rem;
-    font-family: "Roboto", sans-serif;    
-   /*  padding-bottom: var(--spacing-128); */
+    position: relative;
+    min-height: 100vh;
 }
 #root{
     display: flex;
