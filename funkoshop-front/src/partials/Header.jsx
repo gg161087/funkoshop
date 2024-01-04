@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { faBars, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronDown, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 import { Icon } from './../components/Icon.jsx'
 import { DataContext } from './../contexts/DataContexts.jsx';
@@ -12,6 +12,7 @@ export const Header = () => {
     const { categories, isLoggedIn } = useContext(DataContext);
 
     const toggleMenu = () => {
+        console.log('click');
         setIsOpen(!isOpen);
       };
 
@@ -25,7 +26,7 @@ export const Header = () => {
                             <img src="/img/branding/logo_light_horizontal.svg" alt="FunkoShop Logotipo"/>
                         </Link>
                     </picture>
-                    <div className="navbar-toggle" id="navbarToggle">
+                    <div className="navbar-toggle" id="navbarToggle" onClick={() => toggleMenu()}>
                         <Icon css='icon' icon={faBars}/>                           
                     </div>
                     <ul className={isOpen ? 'navbar__menu active' : 'navbar__menu'}>
@@ -59,7 +60,7 @@ export const Header = () => {
                             </>  
                         }                  
                         <li className="navbar__item">
-                            <Link className="navbar__cart" to="/cart"><img src="/img/icons/cart-icon.svg" alt="icono de carrito de compras"/></Link>                    
+                            <Link className="navbar__item__cart" to="/cart"> <Icon css='icon' icon={faCartShopping} /></Link>                    
                         </li>
                     </ul>
                 </nav>

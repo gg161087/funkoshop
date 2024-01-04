@@ -141,37 +141,11 @@ input[type="text"]::placeholder {
     .container{
         min-width: 768px;
         max-width: 768px;
-    }    
-    .navbar-toggle{
-        font-size: xx-large;          
-        background: none;              
-        display: flex;
-        justify-items: center;
-        align-items: center;
-    }  
-    .navbar__menu {
-        display: none;
-        list-style: none;
-        padding: 0;
-      }
-      
-      .navbar__menu.active {
-        display: block;
-      }
-      
-      .navbar__menu li {
-        margin-bottom: 10px;
-      }
-      
-      .navbar-toggle {
-        cursor: pointer;
-      }
-      
-      .toggle-icon {
-        width: 30px;
-        height: 3px;
-        background-color: white;
-        margin: 5px 0;
-        transition: all 0.3s ease;
-      }  
+    }
+}
+@media screen and (max-width: 880px) {
+    .container{
+        min-width: 580px;
+        max-width: 580px;
+    }
 }

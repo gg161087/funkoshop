@@ -4,7 +4,7 @@ import './Collection.css'
 
 export const Collection = ({licence, nameClass}) => {           
     return (
-        <section className="collection container">
+        <section className="collection">
             <article className="collection__content">
                 <h3 className="collection__title">{licence.name}</h3>
                 <p className="collection__text">{licence.description}</p>
