@@ -1,0 +1,22 @@
+.tabs{
+    width: 100%;
+}
+.tab-buttons{
+    display: flex;
+    width: 100%; 
+    justify-content: space-around;
+    align-items: center;
+    background-color: #444;
+}
+.tab-buttons button {
+    color: aliceblue;
+    height: 3rem;
+    width: 100%;
+    font-size: larger;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+.tab-buttons .active {
+    background-color: #222;
+}

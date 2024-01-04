@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faPencil, faTrash, faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
-import { Icon } from './../Icon.jsx'
+import { Icon } from './../Icon.jsx';
+
+import './Table.css';
 
 export const TableProducts = ({ products }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 10;
+    const itemsPerPage = 10;
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const indexOfLastElement = currentPage * itemsPerPage;
+    const indexOfFirstElement = indexOfLastElement - itemsPerPage;
+    const currentItems = products.slice(indexOfFirstElement, indexOfLastElement);
 
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -22,7 +24,7 @@ export const TableProducts = ({ products }) => {
 
     return (
         <div className="container">
-            <table>
+            <table class="dark-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -32,11 +34,10 @@ export const TableProducts = ({ products }) => {
                         <th>Stock</th>
                         <th>SKU</th>
                         <th>Acciones</th>
-                        {/* Agrega más encabezados según sea necesario */}
                     </tr>
                 </thead>
                 <tbody>
-                    {currentProducts.map((product) => (
+                    {currentItems.map((product) => (
                         <tr key={product.id}>
                             <td>{product.id}</td>
                             <td>{product.name}</td>
@@ -45,20 +46,21 @@ export const TableProducts = ({ products }) => {
                             <td>{product.stock}</td>
                             <td>{product.sku}</td>
                             <td>
-                                <Link to={`/edit/products/${product.id}`} className='btn btn-success btn-lg m-2'>
-                                    <Icon css='icon' icon={faPencil} />
-                                </Link>
-                                <button onClick={() => handlerDelete(product.id)} className='btn btn-danger btn-lg'>
-                                    <Icon css='icon' icon={faTrash} />
-                                </button>
+                                <div className="dark-table__actions">
+                                    <Link to={`/edit/products/${product.id}`}>
+                                        <Icon css='icon' icon={faPencil} />
+                                    </Link>
+                                    <button onClick={() => handlerDelete(product.id)}>
+                                        <Icon css='icon' icon={faTrash} />
+                                    </button>
+                                </div>
                             </td>
-                            {/* Agrega más celdas según sea necesario */}
                         </tr>
                     ))}
                 </tbody>
             </table>
             <ul className="pagination">
-                {Array(Math.ceil(products.length / productsPerPage))
+                {Array(Math.ceil(products.length / itemsPerPage))
                     .fill()
                     .map((_, index) => (
                         <li

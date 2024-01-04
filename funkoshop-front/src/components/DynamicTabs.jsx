@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import './DynamicTabs.css';
+
 export const DynamicTabs = ({ tabData }) => {
     const [activeTab, setActiveTab] = useState(0);
 
