@@ -1,16 +1,16 @@
 import { useContext, useState } from 'react';
 
-import { DataContext } from './../contexts/DataContexts.jsx';
-import { DynamicTabs } from './../components/DynamicTabs.jsx';
-import { TableCategories } from './../components/table/TableCategories.jsx';
-import { TableLicences } from './../components/table/TableLicences.jsx';
-import { TableProducts } from './../components/table/TableProducts.jsx';
-import { TableRoles } from './../components/table/TableRoles.jsx';
-import { TableUsers } from './../components/table/TableUsers.jsx';
+import { DataContext } from '../contexts/DataContexts.jsx';
+import { DynamicTabs } from './DynamicTabs.jsx';
+import { TableCategories } from './table/TableCategories.jsx';
+import { TableLicences } from './table/TableLicences.jsx';
+import { TableProducts } from './table/TableProducts.jsx';
+import { TableRoles } from './table/TableRoles.jsx';
+import { TableUsers } from './table/TableUsers.jsx';
 
-import './MainAdmin.css';
+import './TablesAdmin.css';
 
-export const MainAdmin = () => {
+export const TablesAdmin = () => {
     const { products, licences, categories, users, roles } = useContext(DataContext);
     
     const tabsAdmin = [

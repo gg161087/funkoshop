@@ -3,12 +3,12 @@ import { useNavigate, Link } from 'react-router-dom';
 
 import { DataContext } from './../contexts/DataContexts.jsx';
 
-import { MainAdmin } from './../components/MainAdmin.jsx';
+import { TablesAdmin } from './../components/TablesAdmin.jsx';
 
 export const Admin = () => {
     return (
         <main className='container'>
-            <MainAdmin/>
+            <TablesAdmin/>
             <Link to='/dashboard'>Volver</Link>
         </main>
     )

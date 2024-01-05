@@ -23,7 +23,7 @@ export const TableRoles = ({roles}) => {
     }
     return (
         <div className="container">
-            <table class="dark-table">
+            <table className="dark-table">
                 <thead>
                     <tr>
                         <th>ID</th>

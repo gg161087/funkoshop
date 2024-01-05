@@ -6,23 +6,17 @@ import { Icon } from './Icon.jsx';
 
 import './Slider.css';
 
-export const Slider = ({ products }) => {
-
+export const Slider = ({ products }) => { 
     const [currentIndex, setCurrentIndex] = useState(0);
     const itemsPerPage = 3;
+    const numPages = Math.ceil(products.length / itemsPerPage);
 
     const nextSlide = () => {
-        const lastIndex = products.length - 1;
-        const shouldResetIndex = currentIndex === lastIndex;
-        const index = shouldResetIndex ? 0 : currentIndex + 1;
-        setCurrentIndex(index);
+        setCurrentIndex((currentIndex + itemsPerPage) % products.length);    
     };
 
     const prevSlide = () => {
-        const lastIndex = products.length - 1;
-        const shouldResetIndex = currentIndex === 0;
-        const index = shouldResetIndex ? lastIndex : currentIndex - 1;
-        setCurrentIndex(index);
+        setCurrentIndex((currentIndex - itemsPerPage + products.length) % products.length);
     };
 
     return (
@@ -30,7 +24,7 @@ export const Slider = ({ products }) => {
             <div className="slider">
                 <h2 className="slider__title">ÚLTIMOS LANZAMIENTOS</h2>
                 <div className="slider__cards">
-                    {products.slice(currentIndex, currentIndex + itemsPerPage).map((product) => (
+                    {(currentIndex + itemsPerPage <= products.length ? products.slice(currentIndex, currentIndex + itemsPerPage) : products.slice(currentIndex)).map((product) => (
                         <Card product={product} key={product.id}></Card>
                     ))}
                 </div>

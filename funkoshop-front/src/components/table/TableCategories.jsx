@@ -24,7 +24,7 @@ export const TableCategories = ({categories}) => {
 
     return (
         <div className="container">           
-            <table class="dark-table">
+            <table className="dark-table">
                 <thead>
                     <tr>
                         <th>ID</th>
