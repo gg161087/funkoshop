@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import { getDynamic } from './../../utils/httpClient.js';
 import { updateDynamic } from '../../utils/httpClient.js';
+import { DataContext } from './../../contexts/DataContexts.jsx';
+import { Icon } from './../../components/Icon.jsx';
 
-export const EditProduct = ({id}) => {    
-    const navigate = useNavigate();
+import './Edit.css';
 
-    const [product, setProduct] = useState(null);
+export const EditProduct = () => { 
+    const { id } = useParams();
+    const { licences, products, categories } = useContext(DataContext);
+    const product = products.find(product => product.id === parseInt(id));
+
+    const navigate = useNavigate();    
+
     const [name, setName] = useState('');    
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState(0);
@@ -20,25 +27,30 @@ export const EditProduct = ({id}) => {
     const [licenceId, setLicenceId] = useState(0);
     const [categoryId, setCategoryId] = useState(0);
 
-    const getProductById = async () => {
-        const response = await getDynamic(`products/${id}`)
-        setProduct(response)
-        setName(response.name)        
-        setDescription(response.description)
-        setPrice(response.price)
-        setStock(response.stock)
-        setDiscount(response.discount)
-        setSku(response.sku)
-        setDues(response.dues)
-        setImageFront(response.image_front)
-        setImageBack(response.image_back)
-        setCategoryId(response.licence_id)        
-        setCategoryId(response.category_id)        
+    const setProperties = (props) => {       
+        setName(props.name)        
+        setDescription(props.description)
+        setPrice(props.price)
+        setStock(props.stock)
+        setDiscount(props.discount)
+        setSku(props.sku)
+        setDues(props.dues)
+        setImageFront(props.image_front)
+        setImageBack(props.image_back)
+        setLicenceId(props.licence_id)        
+        setCategoryId(props.category_id)
     }
 
-    useEffect(() => {
-        getProductById()
-    }, [id])
+    const handleDuesChange = (event) => {
+        const value = parseInt(event.target.value, 10);
+        setDues(value);
+    };
+    
+    useEffect(() => {  
+        if (product) {            
+            setProperties(product);
+        }       
+    }, [product])
 
     const updateProduct = async (e) => {
         e.preventDefault()
@@ -57,109 +69,158 @@ export const EditProduct = ({id}) => {
         }        
         const {result} = await updateDynamic('products', id, updateProduct)
     }
-
     if (!product) {
         return (
             <div className="container">
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
+                <Icon css='icon' icon={faSpinner} />
             </div>
         )
     }
+    
     return (
-        <div className='container'>
-            <h1>Editar Producto </h1>
-            <form onSubmit={updateProduct}>
-                <div className="mb-3">
-                    <label className="form-label">Nombre</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="form-control"/>
+        <div id="edit">
+            <h2 className='edit__title'>Editar Producto</h2>
+            <form onSubmit={updateProduct} className='edit__form'>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Nombre</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>                
-                <div className="mb-3">
-                    <label className="form-label">Descripcción</label>
-                    <input
-                        type="text"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Descripcción</label>
+                        <textarea                        
+                            name="description" 
+                            id="description"                            
+                            cols="30" rows="6"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        >
+                        </textarea>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Precio</label>
-                    <input
-                        type="number"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Precio</label>
+                        <input
+                            type="number"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Stock</label>
-                    <input
-                        type="number"
-                        value={stock}
-                        onChange={(e) => setStock(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Stock</label>
+                        <input
+                            type="number"
+                            value={stock}
+                            onChange={(e) => setStock(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Descuento</label>
-                    <input
-                        type="number"
-                        value={discount}
-                        onChange={(e) => setDiscount(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Descuento</label>
+                        <input
+                            type="number"
+                            value={discount}
+                            onChange={(e) => setDiscount(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Codigo</label>
-                    <input
-                        type="text"
-                        value={sku}
-                        onChange={(e) => setSku(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Codigo</label>
+                        <input
+                            type="text"
+                            value={sku}
+                            onChange={(e) => setSku(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Cuotas</label>
-                    <input
-                        type="number"
-                        value={dues}
-                        onChange={(e) => setDues(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label" htmlFor='dues'>Cuotas</label>
+                        <select 
+                            className="form__select" 
+                            name="dues" 
+                            id="dues" 
+                            value={dues}
+                            onChange={(e) => handleDuesChange(e)}
+                        >
+                            <option value="0">Sin cuotas</option>
+                            <option value="3">3 cuotas s/ interés</option>
+                            <option value="6">6 cuotas s/ interés</option>
+                            <option value="9">9 cuotas s/ interés</option>
+                            <option value="12">12 cuotas s/ interés</option>
+                            <option value="18">18 cuotas s/ interés</option>
+                            <option value="24">24 cuotas s/ interés</option>
+                        </select>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Img URL Front</label>
-                    <input
-                        type="text"
-                        value={imageFront}
-                        onChange={(e) => setImageFront(e.target.value)}
-                        className="form-control" />
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Img URL Front</label>
+                        <input
+                            type="text"
+                            value={imageFront}
+                            onChange={(e) => setImageFront(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Img URL Back</label>
-                    <input
-                        type="text"
-                        value={imageBack}
-                        onChange={(e) => setImageBack(e.target.value)}
-                        className="form-control" />
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Img URL Back</label>
+                        <input
+                            type="text"
+                            value={imageBack}
+                            onChange={(e) => setImageBack(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Licencia ID</label>
-                    <input
-                        type="number"
-                        value={licenceId}
-                        onChange={(e) => setLicenceId(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Licencia ID</label>
+                        <select 
+                            className="form__select" 
+                            name="collection" 
+                            id="collection" 
+                            required 
+                            value={licenceId}
+                            onChange={(e) => setLicenceId(e.target.value)}
+                        >
+                            {licences.map((licence) => (
+                                <option key={licence.id} value={licence.id}>{licence.name}</option>
+                            ))}
+                        </select>                        
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Categoria ID</label>
-                    <input
-                        type="number"
-                        value={categoryId}
-                        onChange={(e) => setCategoryId(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Categoria ID</label>
+                        <select 
+                            className="form__select" 
+                            name="category" 
+                            id="category" 
+                            required 
+                            value={categoryId}
+                            onChange={(e) => setCategoryId(e.target.value)}
+                        >
+                            {categories.map((category) => (
+                                <option key={category.id} value={category.id}>{category.name.toUpperCase()}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
-                <button type="submit" className="btn btn-primary">EDITAR</button>
+                <div>
+                    <button type="submit" className="btn btn--primary btn--large">EDITAR</button>
+                </div>
             </form>
         </div>
     )

@@ -1,53 +1,54 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import { getDinamic } from '../../utils/getDinamic.js';
-import { updateDinamic } from '../../utils/updateDinamic.js';
+import { DataContext } from './../../contexts/DataContexts.jsx';
+import { updateDynamic } from '../../utils/httpClient.js';
+import { Icon } from './../Icon.jsx';
 
-export const EditRole = ({id}) => {
+export const EditRole = () => {
+    const { id } = useParams();
+    const { roles } = useContext(DataContext);
+    const role = roles.find(role => role.id === parseInt(id));
+
     const navigate = useNavigate();
-
-    const [role, setRole] = useState('');
 
     const [name, setName] = useState('');
 
-    const getRoleById = async () => {
-        const response = await getDinamic(`roles/${id}`)
-        setRole(response)
-        setName(response.name)    
-    }
 
     useEffect(() => {
-        getRoleById()
-    }, [id])
+        if (role) {
+            setName(role.name)
+        }
+    }, [role])
 
     const updateRole = async (e) => {
         e.preventDefault()        
-        const result = await updateDinamic('roles', id, {name:name})
+        const result = await updateDynamic('roles', id, {name:name})
     }
 
     if (!role) {
         return (
             <div className="container">
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
+                <Icon css='icon' icon={faSpinner} />
             </div>
         )
     }
     return (
-        <div className='container'>
-            <h1>Editar Rol </h1>
-            <form onSubmit={updateRole}>
-                <div className="mb-3">
-                    <label className="form-label">Nombre</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="form-control"/>
+        <div id="edit">
+            <h2 className='edit__title'>Editar Rol</h2>
+            <form onSubmit={updateRole} className='edit__form'>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Nombre</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>                
-                <button type="submit" className="btn btn-primary">EDITAR</button>
+                <button type="submit" className="btn btn--primary btn--large">EDITAR</button>
             </form>
         </div>
     )

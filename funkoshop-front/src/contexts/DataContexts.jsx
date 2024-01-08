@@ -13,7 +13,8 @@ export const DataProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null)
     const [users, setUsers] = useState([]);
-    const [roles, setRoles] = useState(null)
+    const [roles, setRoles] = useState([]);
+    const [rolesByUser, setRolesByUser] = useState(null);
     const [productsCart, setProductsCart] = useState([]);
     const [total, setTotal] = useState(0);
     const [countProductsCart, setCountProductsCart] = useState(0);
@@ -36,6 +37,12 @@ export const DataProvider = ({ children }) => {
             setCategories(response)
         }
     }
+    const getRoles = async () => {
+        const response = await getDynamic('roles');
+        if (response) {
+            setRoles(response)
+        }
+    }
     const getUsers = async () => {
         const response = await getDynamic('users');
         if (response) {
@@ -49,7 +56,7 @@ export const DataProvider = ({ children }) => {
             let user = JSON.parse(localUser)            
             setIsLoggedIn(true);
             setUser(user)
-            setRoles(user.roles)
+            setRolesByUser(user.roles)
         }        
     }
 
@@ -64,7 +71,7 @@ export const DataProvider = ({ children }) => {
                 localStorage.setItem('token', authToken);
                 localStorage.setItem('user', JSON.stringify(response))
                 setUser(response);  
-                setRoles(response.roles)                                             
+                setRolesByUser(response.roles)                                             
                 setIsLoggedIn(true);
             } else {
                 setIsLoggedIn(false);
@@ -86,7 +93,8 @@ export const DataProvider = ({ children }) => {
         getLicences()
         getCategories() 
         getUsers()  
-        getToken()        
+        getToken()
+        getRoles()        
     },[])
 
     if (!products && !licences && !categories && !users) {

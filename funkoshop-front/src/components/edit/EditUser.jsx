@@ -1,97 +1,114 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import { getDinamic } from '../../utils/getDinamic.js';
-import { updateDinamic } from '../../utils/updateDinamic.js';
+import { DataContext } from './../../contexts/DataContexts.jsx';
+import { updateDynamic } from './../../utils/httpClient.js';
+import { Icon } from './../../components/Icon.jsx';
 
-export const EditUser = ({id}) => {
+import './Edit.css';
+
+export const EditUser = () => {
+    const { id } = useParams();
+    const { users } = useContext(DataContext);
+    const user = users.find(user => user.id === parseInt(id));
+
     const navigate = useNavigate();
-
-    const [user, setUser] = useState('');
 
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
     const [telephone, setTelephone] = useState(0);
     const [email, setEmail] = useState('');
-    const [passwowrd, setPassword] = useState('');
+    const [password, setPassword] = useState('');
 
-    const getUserById = async () => {
-        const response = await getDinamic(`users/${id}`)
-        setUser(response)
-        setName(response.name) 
-        setLastName(response.last_name) 
-        setTelephone(response.telephone)
-        setEmail(response.email)
-        setPassword(response.password)  
+    const setProperties = (props) => {        
+        setName(props.name) 
+        setLastName(props.last_name) 
+        setTelephone(props.telephone)
+        setEmail(props.email)
+        setPassword(props.password)  
     }
 
     useEffect(() => {
-        getUserById()
-    }, [id])
+        if (user) {             
+            setProperties(user);
+        }
+    }, [user])
 
-    const updateUser = async (e) => {
-        console.log(user);
+    const updateUser = async (e) => { 
         e.preventDefault()
         const updateUser = {
             name:name,
+            last_name: lastName,
+            telephone: telephone,
+            email: email,
+            password: password
         }        
-        const result = await updateDinamic('users', id, updateUser)
+        const result = await updateDynamic('users', id, updateUser)
     }
 
     if (!user) {
         return (
             <div className="container">
-                <div className="spinner-border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
+                <Icon css='icon' icon={faSpinner} />
             </div>
         )
     }
     return (
-        <div className='container'>
-            <h1>Editar Usuario </h1>
-            <form onSubmit={updateUser}>
-                <div className="mb-3">
-                    <label className="form-label">Nombre</label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="form-control"/>
+        <div id="edit">
+            <h2 className='edit__title'>Editar Usuario</h2>
+            <form onSubmit={updateUser} className='edit__form'>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Nombre</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div> 
-                <div className="mb-3">
-                    <label className="form-label">Apellido</label>
-                    <input
-                        type="text"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Apellido</label>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="form__input"/>
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Telefono</label>
-                    <input
-                        type="number"
-                        value={telephone}
-                        onChange={(e) => setTelephone(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Telefono</label>
+                        <input
+                            type="number"
+                            value={telephone}
+                            onChange={(e) => setTelephone(e.target.value)}
+                            className="form__input"/>                        
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Email</label>
-                    <input
-                        type="text"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Email</label>
+                        <input
+                            type="text"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="form__input"/>                        
+                    </div>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Contraseña</label>
-                    <input
-                        type="password"
-                        value={passwowrd}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="form-control"/>
+                <div className="form__flex">
+                    <div className="form__box--flex">
+                        <label className="form__label">Contraseña</label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="form__input"/>                        
+                    </div>
                 </div>               
-                <button type="submit" className="btn btn-primary">EDITAR</button>
+                <button type="submit" className="btn btn--primary btn--large">EDITAR</button>
             </form>
         </div>
     )

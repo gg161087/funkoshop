@@ -39,7 +39,7 @@ export const Detail = () => {
                         <button id="add" className="item__quantity" type="button">+</button>
                         <button className="item__submit btn btn--primary btn--medium" type="submit">Agregar al carrito</button>
                     </form>
-                    <p className="item__promo"><a href="">Ver métodos de pago</a> - 3 CUOTAS SIN INTERÉS</p>
+                    <p className="item__promo"><a href="">Ver métodos de pago</a> - {product.dues} CUOTAS SIN INTERÉS</p>
                 </article>
             </section>
         </main>
