@@ -121,4 +121,13 @@ textarea::placeholder {
     border: 2px solid var(--dark-solid);
     font-size: var(--font-medium);
     padding: var(--spacing-8);
+    width: 100%;
+    text-align: center;
+}
+.edit__back{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 2rem;
 }

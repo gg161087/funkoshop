@@ -49,7 +49,7 @@ export const EditRole = () => {
                     </div>
                 </div>                
                 <button type="submit" className="btn btn--primary btn--large">EDITAR</button>
-            </form>
+            </form>            
         </div>
     )
 }

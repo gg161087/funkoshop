@@ -8,7 +8,7 @@ import './Table.css';
 
 export const TableProducts = ({ products }) => {
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 5;
 
     const indexOfLastElement = currentPage * itemsPerPage;
     const indexOfFirstElement = indexOfLastElement - itemsPerPage;

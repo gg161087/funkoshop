@@ -6,36 +6,67 @@ import { DataContext } from './../contexts/DataContexts.jsx';
 import { Card } from '././../components/Card.jsx';
 import { Icon } from './../components/Icon.jsx';
 
+import { news } from './../utils/news.js'
+
 import './Shop.css';
 
 export const Shop = () => {
-    const { category, licence_id } = useParams();   
-    const { products } = useContext(DataContext); 
-    const [ showProducts, setShowProducts] = useState([])
-    
+    const { category, licence_id } = useParams();
+    const { products } = useContext(DataContext);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [productsPerPage] = useState(6);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [filters, setFilters] = useState({
+        news: false,
+        offers: false,
+        specials: false,
+        favs: false
+    });
+    let filtered = products;
+
     const setProducts = () => {
         if (category) {
-            const productsByCategory = products.filter(
+            filtered = products.filter(
                 product => licence_id ? product.category.name === category & product.licence_id === parseInt(licence_id) :
-                product.category.name === category
+                    product.category.name === category
             );
-            setShowProducts(productsByCategory)
-        } else {
-            setShowProducts(products)
         }
+        if (filters.news) {            
+            filtered = filtered.filter(product => news(product.createdAt));
+        }
+        if (filters.offers) {
+            filtered = filtered.filter(product => product.discount > 10);
+        }
+        if (filters.specials) {            
+            filtered = filtered.filter(product => product.special == 1);
+        }
+        if (filters.favs) {
+            filtered = filtered.filter(product => product);
+        }
+        console.log(filtered);
+        setFilteredProducts(filtered)
     }
-    
+
     useEffect(() => {
-       setProducts()   
-    },[category])    
-    if (!showProducts) {
-        return (
-            <div className="container">
-                <Icon css='icon' icon={faSpinner} />
-            </div>
-        )
-    }    
-    console.log(showProducts);
+        setProducts()
+    }, [category, products, filters])
+
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredProducts.length / productsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    const handleFilterChange = (filter) => {
+        setFilters(prevFilters => ({
+            ...prevFilters,
+            [filter]: !prevFilters[filter]
+        }));
+    };
+
     return (
         <main id="shop" className="container">
             <aside className="shop__filters filters">
@@ -64,39 +95,94 @@ export const Shop = () => {
                 <div className="filters__checks">
                     <span className="filters__title" htmlFor="filter">FILTRAR</span>
                     <div>
-                        <input type="checkbox" name="filter" id="news" value="news" />
-                        <label htmlFor="">NUEVOS</label>
+                        <input
+                            type="checkbox"
+                            name="filter"
+                            id="news"
+                            value="news"
+                            checked={filters.news}
+                            onChange={() => handleFilterChange('news')}
+                        />
+                        <label htmlFor="news">NUEVOS</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="filter" id="offers" value="offers" />
-                        <label htmlFor="">OFERTAS</label>
+                        <input
+                            type="checkbox"
+                            name="filter"
+                            id="offers"
+                            value="offers"
+                            checked={filters.offers}
+                            onChange={() => handleFilterChange('offers')}
+                        />
+                        <label htmlFor="offers">OFERTAS</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="filter" id="specials" value="specials" />
-                        <label htmlFor="">EDICIÓN ESPECIAL</label>
+                        <input
+                            type="checkbox"
+                            name="filter"
+                            id="specials"
+                            value="specials"
+                            checked={filters.specials}
+                            onChange={() => handleFilterChange('specials')}
+                        />
+                        <label htmlFor="specials">EDICIÓN ESPECIAL</label>
                     </div>
                     <div>
-                        <input type="checkbox" name="filter" id="favs" value="favs" />
-                        <label htmlFor="">FAVORITOS</label>
+                        <input
+                            type="checkbox"
+                            name="filter"
+                            id="favs"
+                            value="favs"
+                            checked={filters.favs}
+                            onChange={() => handleFilterChange('favs')}
+                        />
+                        <label htmlFor="favs">FAVORITOS</label>
                     </div>
                 </div>
             </aside>
             <section className="shop__content">
-                <ul className="shop__items">
-                    {showProducts.map((product) => (
-                        <li key={product.id}>
-                            <Card product={product}></Card>
-                        </li>
-                    ))}
-                </ul>
+                {!currentProducts.length ? 
+                    <div className="container">
+                        <Icon css='icon' icon={faSpinner} />
+                    </div>
+                    :
+                    <ul className="shop__items">                
+                        {currentProducts.map((product) => (
+                            <li key={product.id}>
+                                <Card product={product}></Card>
+                            </li>
+                        ))}
+                    </ul>
+                }                
                 <div className="pagination">
-                    <Link className="pagination__link" href="#" ><Icon css='icon' icon={faChevronLeft}/></Link>
-                    <Link className="pagination__link pagination__link--selected" href="#" >1</Link>
-                    <Link className="pagination__link" href="#" >2</Link>
-                    <Link className="pagination__link" href="#" >3</Link>
-                    <Link className="pagination__link" href="#" >4</Link>
-                    <Link className="pagination__link" href="#" >5</Link>
-                    <Link className="pagination__link" href="#" ><Icon css='icon' icon={faChevronRight}/></Link>
+                    {filteredProducts.length > 6 &&
+                        <>
+                            <Link
+                                to={`#${currentPage > 1 ? currentPage - 1 : 1}`}
+                                className={`pagination__link ${currentPage === 1 ? 'disabled' : 'pagination__link--selected'}`}
+                                onClick={() => setCurrentPage(currentPage > 1 ? currentPage - 1 : 1)}
+                            >
+                                Anterior
+                            </Link>
+                            {pageNumbers.map((number) => (
+                                <Link
+                                    key={number}
+                                    to={`#${number}`}
+                                    className={`pagination__link ${currentPage === number ? 'pagination__link--selected' : ''}`}
+                                    onClick={() => setCurrentPage(number)}
+                                >
+                                    {number}
+                                </Link>
+                            ))}
+                            <Link
+                                to={`#${currentPage < pageNumbers.length ? currentPage + 1 : pageNumbers.length}`}
+                                className={`pagination__link ${currentPage === pageNumbers.length ? 'disabled' : 'pagination__link--selected'}`}
+                                onClick={() => setCurrentPage(currentPage < pageNumbers.length ? currentPage + 1 : pageNumbers.length)}
+                            >
+                                Siguiente
+                            </Link>
+                        </>
+                    }
                 </div>
             </section>
         </main>

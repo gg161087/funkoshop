@@ -47,10 +47,8 @@ export const EditCategory = () => {
                             className="form__input"/>
                     </div>
                 </div>  
-                <div>
-                    <button type="submit" className="btn btn--primary btn--large">EDITAR</button>
-                </div>              
-            </form>
+                <button type="submit" className="btn btn--primary btn--large">EDITAR</button>                            
+            </form>            
         </div>
     )
 }

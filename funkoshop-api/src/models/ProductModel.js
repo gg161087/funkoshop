@@ -38,6 +38,10 @@ export const productModel = db.define('products', {
         type: DataTypes.INTEGER(11),
         allowNull: true
     },
+    special: {
+        type: DataTypes.TINYINT(1),
+        allowNull: true
+    },
     image_front: {
         type: DataTypes.STRING(255),
         allowNull: true,

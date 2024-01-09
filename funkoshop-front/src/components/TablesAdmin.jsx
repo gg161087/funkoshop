@@ -39,7 +39,7 @@ export const TablesAdmin = () => {
     return (
         <div className='container'>
             <div id='admin'>
-                <h1>Tablas</h1>
+                <h2 className='edit__title'>Tablas</h2>
                 <DynamicTabs tabData={tabsAdmin}></DynamicTabs>                              
             </div>
         </div>

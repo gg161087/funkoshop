@@ -218,10 +218,8 @@ export const EditProduct = () => {
                         </select>
                     </div>
                 </div>
-                <div>
-                    <button type="submit" className="btn btn--primary btn--large">EDITAR</button>
-                </div>
-            </form>
+                <button type="submit" className="btn btn--primary btn--large">EDITAR</button>                
+            </form>            
         </div>
     )
 }

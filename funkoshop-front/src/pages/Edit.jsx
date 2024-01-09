@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 import { EditCategory } from './../components/edit/EditCategory.jsx';
 import { EditLicence } from './../components/edit/EditLicence.jsx';
@@ -26,7 +26,9 @@ export const Edit = () => {
     };
     return (
         <div className="container">  
-            <Item></Item>                
+            <Item>            
+            </Item>  
+            <Link to='/dashboard/admin' className='edit__back'>Volver</Link>                      
         </div>
     )
 }

@@ -2,12 +2,19 @@ import { Link } from 'react-router-dom'
 
 import './Card.css';
 
-export const Card = ({product}) => {    
+export const Card = ({product}) => { 
+    const currentDate = new Date();            
+    const createdAt = new Date(product.createdAt);
+    const differenceInMilliseconds = currentDate - createdAt;          
+    const millisecondsInADay = 1000 * 60 * 60 * 24;
+    const differenceInDays = Math.floor(differenceInMilliseconds / millisecondsInADay);
+    const isNew = differenceInDays < 7;    
+
     return (
         <article className="card-item">
             <Link className="card-item__link" to={`/shop/${product.category.name}/item/${product.id}`}>
                 <picture className="card-item__cover">
-                    <span className="card-item__tag">Nuevo</span>
+                    {isNew && <span className="card-item__tag">Nuevo</span>}                    
                     <img className="card-item__img--front slider" src={`/img/${product.image_front}`} alt={`Figura coleccionable Funko de un ${product.name}`}/>
                     <img className="card-item__img--back slider" src={`/img/${product.image_back}`} alt={`Figura coleccionable Funko de un ${product.name} en caja`}/>
                 </picture>

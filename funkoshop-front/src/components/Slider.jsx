@@ -6,31 +6,35 @@ import { Icon } from './Icon.jsx';
 
 import './Slider.css';
 
-export const Slider = ({ products }) => { 
-    const [currentIndex, setCurrentIndex] = useState(0);
+export const Slider = ({ products }) => {
+    const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 3;
-    const numPages = Math.ceil(products.length / itemsPerPage);
+    const totalPages = Math.ceil(products.length / itemsPerPage);
 
     const nextSlide = () => {
-        setCurrentIndex((currentIndex + itemsPerPage) % products.length);    
+        setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
     };
 
     const prevSlide = () => {
-        setCurrentIndex((currentIndex - itemsPerPage + products.length) % products.length);
+        setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
     };
+
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const visibleProducts = products.slice(startIndex, endIndex);
 
     return (
         <section className="container">
             <div className="slider">
                 <h2 className="slider__title">ÚLTIMOS LANZAMIENTOS</h2>
                 <div className="slider__cards">
-                    {(currentIndex + itemsPerPage <= products.length ? products.slice(currentIndex, currentIndex + itemsPerPage) : products.slice(currentIndex)).map((product) => (
+                    {visibleProducts.map((product) => (
                         <Card product={product} key={product.id}></Card>
                     ))}
                 </div>
                 <div className="slider__arrows">
-                    <button className="pagination__link arrows__left" onClick={prevSlide}><Icon css='icon' icon={faChevronLeft}/></button>
-                    <button className="pagination__link arrows__right" onClick={nextSlide}><Icon css='icon' icon={faChevronRight}/></button>
+                    <button className="pagination__link arrows__left" onClick={prevSlide}><Icon css='icon' icon={faChevronLeft} /></button>
+                    <button className="pagination__link arrows__right" onClick={nextSlide}><Icon css='icon' icon={faChevronRight} /></button>
                 </div>
             </div>
         </section>

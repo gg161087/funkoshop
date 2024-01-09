@@ -5,9 +5,13 @@ import { Collection } from './../components/Collection.jsx';
 import { Slider } from './../components/Slider.jsx'
 import { DataContext } from './../contexts/DataContexts.jsx';
 
+import { news } from './../utils/news.js'
+
 export const Home = () => {
 
     const { licences, products } = useContext(DataContext);
+
+    const latestReleases = products.filter(product => news(product.createdAt));
 
     return (
         <>         
@@ -23,7 +27,7 @@ export const Home = () => {
                         </Collection>      
                     ))}
                 </div>
-                <Slider products={products}></Slider>
+                <Slider products={latestReleases}></Slider>
             </main>      
         </>
     )
