@@ -1,8 +1,8 @@
-import { categoryModel } from './../models/categoryModel.js';
+import { Category } from './../database/initSequelize.js';
 
 export const getAllCategories = async (req, res) => {
     try {
-        const cateogries = await categoryModel.findAll();
+        const cateogries = await Category.findAll();
         res.status(200).json(cateogries);
     } catch (error) {
         console.error(error);
@@ -13,7 +13,7 @@ export const getAllCategories = async (req, res) => {
 export const getCategoryById = async (req, res) => {
     const { id } = req.params;
     try {
-        const category = await categoryModel.findByPk(id);
+        const category = await Category.findByPk(id);
         res.status(200).json(category);        
     } catch (error) {
         console.error(error)
@@ -27,7 +27,7 @@ export const createCategory = async (req, res) => {
         return res.status(404).json({ message: 'Missing fields.'});
     };
     try {
-        const newCategory = await categoryModel.create({ name });
+        const newCategory = await Category.create({ name });
         if (!newCategory) {
             res.status(404).json({ message: 'Bad request.'});
         } else {
@@ -46,7 +46,7 @@ export const updateCategoryById = async (req, res) => {
         return res.status(404).json({message: 'Missing fields.'});
     };
     try {
-        const category = await categoryModel.findByPk(id);
+        const category = await Category.findByPk(id);
         if (!category) {
             res.status(404).json({ message: 'Not found.' });
         } else {
@@ -62,7 +62,7 @@ export const updateCategoryById = async (req, res) => {
 export const deleteCategoryById = async (req, res) => {
     const { id } = req.params;
     try {
-        const category = await categoryModel.findByPk(id);
+        const category = await Category.findByPk(id);
         if (!category) {
             res.status(404).json({ message: 'Not found.' });
         } else {

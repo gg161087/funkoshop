@@ -1,24 +1,17 @@
 import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
-    const licenceModel = sequelize.define('licences', {
+    const roleModel = sequelize.define('roles', {
         id: {
             type: DataTypes.INTEGER(11),
             primaryKey: true,
+            allowNull: false,
             autoIncrement: true
         },
         name: {
             type: DataTypes.STRING(60),
-            allowNull: false,
-            unique: true
-        },
-        description: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
-        },
-        image: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
+            unique: true,
+            allowNull: false
         },
         createdAt: {
             type: DataTypes.DATE,
@@ -29,5 +22,5 @@ export default (sequelize) => {
             defaultValue: DataTypes.NOW
         }
     });
-    return licenceModel;
+    return roleModel;
 }

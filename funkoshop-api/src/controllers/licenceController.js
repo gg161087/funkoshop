@@ -1,8 +1,8 @@
-import { licenceModel } from './../models/licenceModel.js'
+import { Licence } from './../database/initSequelize.js';
 
 export const getAllLicences = async (req, res) => {
     try {
-        const licences = await licenceModel.findAll();
+        const licences = await Licence.findAll();
         res.status(200).json(licences);
     } catch (error) {
         console.error(error);
@@ -13,7 +13,7 @@ export const getAllLicences = async (req, res) => {
 export const getLicenceById = async (req, res) => {
     const { id } = req.params;
     try {
-        const licence = await licenceModel.findByPk(id);
+        const licence = await Licence.findByPk(id);
         res.status(200).json(licence);        
     } catch (error) {
         console.error(error)
@@ -27,7 +27,7 @@ export const createLicence = async (req, res) => {
         return res.status(404).json({ message: 'Missing fields.'});
     };
     try {
-        const newLicence = await licenceModel.create({ name:name, description:description, image:image });
+        const newLicence = await Licence.create({ name:name, description:description, image:image });
         if (!newLicence) {
             res.status(404).json({ message: 'Bad request.'});
         } else {
@@ -46,7 +46,7 @@ export const updateLicenceById = async (req, res) => {
         return res.status(404).json({message: 'Missing fields.'});
     };
     try {
-        const licence = await licenceModel.findByPk(id);
+        const licence = await Licence.findByPk(id);
         if (!licence) {
             res.status(404).json({ message: 'Not found.' });
         } else {
@@ -62,7 +62,7 @@ export const updateLicenceById = async (req, res) => {
 export const deleteLicenceById = async (req, res) => {
     const { id } = req.params;
     try {
-        const licence = await licenceModel.findByPk(id);
+        const licence = await Licence.findByPk(id);
         if (!licence) {
             res.status(404).json({ message: 'Not found.' });
         } else {

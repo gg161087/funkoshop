@@ -1,15 +1,15 @@
 import jwt from 'jsonwebtoken';
 
 import { checkPassword } from './../utils/handlePassword.js';
-import { userModel, roleModel } from './../models/userModel.js';
+import { User, Role } from './../database/initSequelize.js';
 
 export const login = async (req, res, next) => {
     const { email, password } = req.body;  
     try {        
-        const user = await userModel.findOne({ 
+        const user = await User.findOne({
             where: { email },
             include: [
-                roleModel
+                Role
             ]
         });
         if (!user) {

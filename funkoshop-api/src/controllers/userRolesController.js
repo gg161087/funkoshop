@@ -1,8 +1,8 @@
-import { userRolesModel } from './../models/userModel.js';
+import { UserRoles } from './../database/initSequelize.js';
 
 export const getAllUserRoles = async (req, res) => {
     try {
-        const userRoles = await  userRolesModel.findAll();
+        const userRoles = await  UserRoles.findAll();
         res.status(200).json(userRoles);
     } catch (error) {
         console.error(error);
@@ -13,7 +13,7 @@ export const getAllUserRoles = async (req, res) => {
 export const getUserRolesByUserId = async (req, res) => {
     const { user_id } = req.params;
     try {
-        const userRoles = await userRolesModel.findByPk(user_id);     
+        const userRoles = await UserRoles.findByPk(user_id);     
         res.status(200).json(userRoles);
     } catch (error) {
         console.error(error)
@@ -27,7 +27,7 @@ export const createUserRoles = async (req, res) => {
         return res.status(404).json({message: 'Missing fields.'});
     };
     try {
-        const newUserRoles = await userRolesModel.create({user_id, role_id});
+        const newUserRoles = await UserRoles.create({user_id, role_id});
         res.status(201).json(newUserRoles);
     } catch (error) {
         console.error(error);
@@ -42,7 +42,7 @@ export const updateUserRolesByUserId = async (req, res) => {
         return res.status(404).json({message: 'Missing fields.'});
     };
     try {
-        const userRoles = await userRolesModel.findByPk(user_id);         
+        const userRoles = await UserRoles.findByPk(user_id);         
         if (!userRoles) {
             res.status(404).json({ message: 'Not found.' });
         } else {
@@ -58,7 +58,7 @@ export const updateUserRolesByUserId = async (req, res) => {
 export const deleteUserRolesByUserId = async (req, res) => {
     const { user_id } = req.params;
     try {
-        const userRoles = await userRolesModel.findByPk(user_id);
+        const userRoles = await UserRoles.findByPk(user_id);
         if (!userRoles) {
             res.status(404).json({ message: 'Not found.' });
         } else {

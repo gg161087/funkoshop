@@ -1,9 +1,9 @@
 import app from './app.js';
-import { dbConnection } from './src/database/dbConnection.js';
+import { initializeDatabase } from './src/database/initDatabase.js';
 
 const main = () => {
 	app.listen(app.get('port'), () => {
-		dbConnection();
+		initializeDatabase();
 		console.log(`Server running http://localhost:${app.get('port')}`);
 	});  
 };

@@ -1,12 +1,11 @@
-import { userModel, userRolesModel } from '../models/userModel.js';
-import { roleModel } from '../models/userModel.js';
-import { hashPassword } from '../utils/handlePassword.js';
+import { User, UserRoles, Role } from './../database/initSequelize.js';
+import { hashPassword }from './../utils/handlePassword.js';
 
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await userModel.findAll({
+        const users = await User.findAll({
             include: [
-                roleModel 
+                Role
             ]
         });
         res.status(200).json(users)
@@ -19,9 +18,9 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const user = await userModel.findByPk(id, {
+        const user = await User.findByPk(id, {
             include: [
-                roleModel 
+                Role
             ]
         });     
         res.status(200).json(user);
@@ -45,8 +44,8 @@ export const createNewUser = async (req, res, next) => {
         password: hashedPass
     };
     try {
-        const newUser = await userModel.create(userSchema);
-        const newUserRole = await userRolesModel.create({user_id: newUser.id, role_id: 2})
+        const newUser = await User.create(userSchema);
+        const newUserRole = await UserRoles.create({user_id: newUser.id, role_id: 2})
         res.status(201).json(newUser);
     } catch (error) {
         console.error(error);
@@ -69,7 +68,7 @@ export const updateUserById = async (req, res) => {
         password: hashedPass
     };
     try {
-        const user = await userModel.findByPk(id);
+        const user = await User.findByPk(id);
         if (!user) {
             res.status(404).json({ message: 'Not found.' });
         } else {
@@ -85,7 +84,7 @@ export const updateUserById = async (req, res) => {
 export const deleteUserById = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const user = await userModel.findByPk(id);
+        const user = await User.findByPk(id);
         if (!user) {
             res.status(404).json({ message: 'Not found.' });
         } else {

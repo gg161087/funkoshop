@@ -1,8 +1,8 @@
-import { roleModel } from '../models/userModel.js';
+import { Role } from './../database/initSequelize.js';
 
 export const getAllRoles = async (req, res) => {
     try {
-        const roles = await  roleModel.findAll();
+        const roles = await  Role.findAll();
         res.status(200).json(roles)
     } catch (error) {
         console.error(error);
@@ -13,7 +13,7 @@ export const getAllRoles = async (req, res) => {
 export const getRoleById = async (req, res) => {
     const { id } = req.params;
     try {
-        const role = await roleModel.findByPk(id);        
+        const role = await Role.findByPk(id);        
         res.status(200).json(role);
     } catch (error) {
         console.error(error)
@@ -27,7 +27,7 @@ export const createRole = async (req, res) => {
         return res.status(404).json({message: 'Missing fields.'});
     };
     try {
-        const newRole = await roleModel.create({name});
+        const newRole = await Role.create({name});
         res.status(201).json(newRole);        
     } catch (error) {
         console.error(error);
@@ -42,7 +42,7 @@ export const updateRoleById = async (req, res) => {
         return res.status(404).json({message: 'Missing fields.'});
     };
     try {
-        const role = await roleModel.findByPk(id);
+        const role = await Role.findByPk(id);
         if (!role) {
             res.status(404).json({ message: 'Not found.' });
         } else {
@@ -58,7 +58,7 @@ export const updateRoleById = async (req, res) => {
 export const deleteRoleById = async (req, res) => {
     const { id } = req.params;
     try {
-        const role = await roleModel.findByPk(id);
+        const role = await Role.findByPk(id);
         if (!role) {
             res.status(404).json({ message: 'Not found.' });
         } else {

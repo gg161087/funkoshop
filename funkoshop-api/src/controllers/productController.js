@@ -1,14 +1,12 @@
-import { licenceModel } from './../models/licenceModel.js'
-import { categoryModel } from '../models/categoryModel.js';
-import { productModel, productSpecificationsModel } from './../models/productModel.js';
+import { Licence, Category, Product, ProductSpecifications } from './../database/initSequelize.js';
 
 export const getAllProducts = async (req, res, next) => {
     try {
-        const products = await productModel.findAll({
+        const products = await Product.findAll({
             include: [
-                { model: licenceModel },
-                { model: categoryModel },
-                { model: productSpecificationsModel }            
+                { model: Licence },
+                { model: Category },
+                { model: ProductSpecifications }            
             ]
         });
         res.status(200).json(products);
@@ -22,10 +20,10 @@ export const getAllProducts = async (req, res, next) => {
 export const getProductById = async (req, res, next) => {
     const { id } = req.params
     try {
-        const product = await productModel.findByPk(id, {
+        const product = await Product.findByPk(id, {
             include: [
-                { model: productSpecificationsModel },                
-                { model: categoryModel },
+                { model: ProductSpecifications },                
+                { model: Category },
             ]
         });
         res.status(200).json(product);
@@ -55,7 +53,7 @@ export const createProduct = async (req, res) => {
         category_id: category_id
     };
     try {
-        const newProduct = await productModel.create({ productSchema });
+        const newProduct = await Product.create({ productSchema });
         return res.status(403).json(newProduct);
     } catch (error) {
         console.error(error);
@@ -88,7 +86,7 @@ export const updateProductById = async (req, res) => {
         category_id: category_id
     };    
     try {
-        const product = await productModel.findByPk(id);        
+        const product = await Product.findByPk(id);        
         if (!product) {
             res.status(404).json({ message: 'Not found.' });
         } else {
@@ -108,7 +106,7 @@ export const updateProductById = async (req, res) => {
 export const deleteProductById = async (req, res) => {
     const { id } = req.params;
     try {
-        const product = await productModel.findByPk(id);
+        const product = await Product.findByPk(id);
 
         if (!product) {
             res.status(404).json({ message: 'Not found.' });
