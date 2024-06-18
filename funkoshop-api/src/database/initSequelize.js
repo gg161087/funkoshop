@@ -10,6 +10,8 @@ import userModel from './../models/userModel.js';
 import roleModel from './../models/roleModel.js';
 import userRolesModel from './../models/userRolesModel.js';
 
+import { initSeeders } from './../seeders/initSeeders.js';
+
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     host: DB_HOST,
     dialect: DB_DIALECT
@@ -30,27 +32,11 @@ Product.belongsTo(Category, { foreignKey: 'category_id' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'user_id' });
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'role_id' });
 
-const initSequelize = async () => {
+const initSequelize = async () => { 
     try {
         await sequelize.authenticate();
         console.log('Database connection established successfully.');
-
-        await sequelize.sync({ force: true });
-        console.log('All models were synchronized successfully.');
-
-        await Category.bulkCreate([
-            { name: 'funkos', description: 'Figuras coleccionables Funko Pop' },
-            { name: 'remeras', description: 'Remeras de anime, series, peliculas y más' },
-            { name: 'llaveros', description: 'Llaveros coleccionables' }
-        ]);
-
-        await Role.bulkCreate([
-            { name: 'admin' },
-            { name: 'user' },
-            { name: 'guest' }
-        ]);
-
-        console.log('Initial data has been added.');
+        initSeeders();        
     } catch (error) {
         console.error('Unable to initialize Sequelize:', error);
     }
